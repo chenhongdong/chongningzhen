@@ -1,0 +1,157 @@
+<template>
+  <view class="detail_wrapper">
+    <view class="box">
+      <view class="slider"></view>
+      <view class="content">
+        <view class="name">{{ name }}</view>
+        <view class="intro">
+          <view class="brief">景区简介</view>
+          <view class="text">{{ intro }}</view>
+        </view>
+        <view class="btns">
+          <view class="btn btn_send" catchtap="sendFlowers">敬献鲜花</view>
+          <view class="btn btn_study">学习预约</view>
+        </view>
+      </view>
+    </view>
+    <popup
+      wx:if="{{isPopup}}"
+    />
+  </view>
+</template>
+
+<script>
+  import { createPage } from '@mpxjs/core'
+  import ApiConfig from '@/api/config'
+
+  createPage({
+    data: {
+      name: '',
+      intro: '',
+      coverUrl: '',
+      introVideo: {},
+      photoList: [],
+      isPopup: false
+    },
+    onLoad(options) {
+      const { id } = options
+      this.getDetailData(id)
+    },
+    onUnload() {},
+    methods: {
+      // 通过id获取详情页数据
+      getDetailData(id) {
+        wx.request({
+          url: ApiConfig.GET_SCENIC_SPOT_DETAIL,
+          data: { postsId: id },
+          success: (res) => {
+            const { status, data } = res.data
+            console.info('detail:    ', data)
+            if (status === 'ok') {
+              const { name, intro, coverUrl, introVideo = {}, photoList = [] } = data
+              this.name = name.split('·')[1]
+              this.intro = intro
+              console.log(coverUrl, introVideo, photoList)
+            }
+          }
+        })
+      },
+      sendFlowers() {
+        this.isPopup = true
+      }
+    }
+  })
+</script>
+
+<style lang="stylus" scoped>
+  .detail_wrapper
+    position relative
+    height 100vh
+    background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/b22fde7c9ab9418c41cc29da44aba47d6cf38a0c6c22aabfc0334b35b5dce8a7.jpg') no-repeat
+    background-size 100% 100%
+    .box
+      width calc(100% - 150rpx)
+      height 100%
+      margin 0 auto
+      .slider
+        width 600rpx
+        height 350rpx
+        overflow hidden
+        background rgba(0, 245, 123, 0.5)
+      .content
+        position relative
+        top -26rpx
+        height 100%
+        .name
+          width 460rpx
+          height 105rpx
+          padding-left 26rpx
+          padding-top 30rpx
+          background url('https://hongselvyou.lndx-study.beihero.com/file/png/ffaf9ee7e0513d69257a403b6ab8858493b8cb6a364160cb5cea73855132e7f8.png') no-repeat
+          background-size contain
+          box-sizing border-box
+          font-size 50rpx
+          font-weight 600
+          color #fff
+          letter-spacing 6rpx
+        .intro
+          padding 30rpx
+          box-sizing border-box
+          .brief
+            font-weight 600
+            font-size 28rpx
+            color #f3db8f
+            letter-spacing 3rpx
+            &:after
+              content ''
+              display block
+              width 100%
+              height 2rpx
+              margin-top 10rpx
+              background-color #e6cea6
+          .text
+            padding-top 22rpx
+            line-height 44rpx
+            font-size 24rpx
+            color #fff
+        .btns
+          display flex
+          justify-content space-between
+          padding 50rpx
+          .btn
+            position relative
+            width 230rpx
+            height 66rpx
+            line-height 60rpx
+            padding-right 26rpx
+            background url('https://hongselvyou.lndx-study.beihero.com/file/png/cb37735133dac5ba36a4386ce3f27e9515a0499aba2fe57ce8a361c02bcc8ff8.png') no-repeat
+            background-size 100% 100%
+            box-sizing border-box
+            text-align right
+            font-size 26rpx
+            color #fff
+            &:before
+              content ''
+              position absolute
+              left 12rpx
+              top 14rpx
+              width 45rpx
+              height 36rpx
+            &.btn_send
+              &:before
+                background url('https://hongselvyou.lndx-study.beihero.com/file/png/88583fb465cc26b0876f52ff1d7df07d1a1d679739fb71a3013deb832b13f9d2.png') no-repeat
+                background-size contain
+            &.btn_study
+              &:before
+                background url('https://hongselvyou.lndx-study.beihero.com/file/png/6225ae7a3477b6ba44ddbaa2fa73df3ed25c9a670a5b1dc8eb6aa376e1c37069.png') no-repeat
+                background-size contain
+</style>
+
+<script type="application/json">
+  {
+    "component": true,
+    "usingComponents": {
+      "popup": "./components/popup"
+    }
+  }
+</script>

@@ -1,0 +1,94 @@
+<template>
+  <view class="popup">
+    <view class="box">
+      <view class="l"></view>
+      <view class="m"></view>
+      <view class="r"></view>
+      <view class="txt"></view>
+      <view class="close" catchtap="closePopup"></view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import { createComponent } from '@mpxjs/core'
+
+  createComponent({
+    data: {},
+    methods: {
+      closePopup() {
+        console.log('点击关闭')
+      }
+    }
+  })
+</script>
+
+<style lang="stylus" scoped>
+  .popup
+    position fixed
+    left 0
+    top 0
+    bottom 0
+    right 0
+    background rgba(0, 0, 0, 0.5)
+    .box
+      display flex
+      left 50%
+      top 43%
+      position absolute
+      transform translate(-50%, -50%)
+      width 600rpx
+      height 450rpx
+      .l
+        position absolute
+        top 70rpx
+        left 10rpx
+        width 294rpx
+        height 325rpx
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/3d0f2cba58fe50f33fca217c34d3f023fd80fa9e2cafd6e44e0ebd4c1dc1ff18.png') no-repeat
+        background-size contain
+        z-index 2
+      .m
+        position absolute
+        left 50%
+        width 200rpx
+        height 300rpx
+        transform translateX(-50%)
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/c38d149222b066328e6bc6a6bbf8b008481986d085d9ff720c54d6f147db3587.png') no-repeat
+        background-size contain
+      .r
+        position absolute
+        top 70rpx
+        right 10rpx
+        width 294rpx
+        height 325rpx
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/e23b33c661b6dc7f6f120538912402a946cc36218948eed5a886f6fa408575c4.png') no-repeat
+        background-size contain
+        z-index 2
+      .txt
+        position absolute
+        top 238rpx
+        left 50%
+        width 308rpx
+        height 109rpx
+        transform translateX(-50%)
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/33251a068f87984d1d5c4b1748d8aa3f14b625fec10827bd0c339290f00f3e8d.png') no-repeat
+        background-size contain
+        z-index 3
+      .close
+        position absolute
+        left 50%
+        bottom 12rpx
+        width 50rpx
+        height 50rpx
+        transform translateX(-50%)
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/f2abcfeb4ae2be090f95ad0ee005cde5676f4abbd3c39892c139d94746409155.png') no-repeat
+        background-size contain
+        z-index 3
+</style>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>
