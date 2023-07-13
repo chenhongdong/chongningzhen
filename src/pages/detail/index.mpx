@@ -1,7 +1,24 @@
 <template>
   <view class="detail_wrapper">
     <view class="box">
-      <view class="slider"></view>
+      <view class="media">
+        <!-- 视频展示区 -->
+        <view class="video-area" wx:if="{{isVideo}}">
+          <video src="{{introVideo}}" class="control" />
+        </view>
+        <!-- 轮播图 -->
+        <view class="slider" wx:else>
+          <swiper autoplay="true" class="slider-swiper">
+            <block wx:for="{{photoList}}" wx:key="*this">
+              <swiper-item>
+                <view class="swiper-item">
+                  <image src="{{item}}" class="img" />
+                </view>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+      </view>
       <view class="content">
         <view class="name">{{ name }}</view>
         <view class="intro">
@@ -10,28 +27,26 @@
         </view>
         <view class="btns">
           <view class="btn btn_send" catchtap="sendFlowers">敬献鲜花</view>
-          <view class="btn btn_study">学习预约</view>
+          <view class="btn btn_study" catchtap="jumpStudy">学习预约</view>
         </view>
       </view>
     </view>
-    <popup
-      wx:if="{{isPopup}}"
-    />
+    <popup wx:if="{{isPopup}}" bind:close="closePopup" />
   </view>
 </template>
 
 <script>
   import { createPage } from '@mpxjs/core'
-  import ApiConfig from '@/api/config'
+  import ApiConfig, { BASE_URL } from '@/api/config'
 
   createPage({
     data: {
       name: '',
       intro: '',
-      coverUrl: '',
       introVideo: {},
       photoList: [],
-      isPopup: false
+      isPopup: false,
+      isVideo: false
     },
     onLoad(options) {
       const { id } = options
@@ -46,18 +61,30 @@
           data: { postsId: id },
           success: (res) => {
             const { status, data } = res.data
-            console.info('detail:    ', data)
             if (status === 'ok') {
-              const { name, intro, coverUrl, introVideo = {}, photoList = [] } = data
+              const { name, intro, introVideo = {}, photoList = [] } = data
               this.name = name.split('·')[1]
               this.intro = intro
-              console.log(coverUrl, introVideo, photoList)
+              // 如果有视频资源就加载视频，不再加载轮播图
+              if (Object.keys(introVideo).length > 0) {
+                this.introVideo = BASE_URL + introVideo?.file?.resUrl
+                this.isVideo = true
+                return
+              }
+              this.photoList = photoList.map((item) => BASE_URL + item?.file?.resUrl)
+              console.log(this.photoList)
             }
           }
         })
       },
       sendFlowers() {
         this.isPopup = true
+      },
+      closePopup() {
+        this.isPopup = false
+      },
+      jumpStudy() {
+        wx.navigateTo({ url: `/pages/study/index` })
       }
     }
   })
@@ -73,11 +100,31 @@
       width calc(100% - 150rpx)
       height 100%
       margin 0 auto
-      .slider
+      overflow hidden
+      .media
         width 600rpx
         height 350rpx
+        margin-top 50rpx
         overflow hidden
-        background rgba(0, 245, 123, 0.5)
+        .video-area, .slider
+          width 100%
+          height 100%
+          background-color #000
+          .control
+            width 100%
+            height 100%
+            background-color #000
+        .slider
+          .slider-swiper
+            width 100%
+            height 100%
+            overflow hidden
+            .swiper-item
+              width 100%
+              height 100%
+              .img
+                width 100%
+                height 100%
       .content
         position relative
         top -26rpx

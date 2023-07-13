@@ -15,9 +15,26 @@
 
   createComponent({
     data: {},
+    lifetimes: {
+      attached() {
+        this.animation()
+      }
+    },
     methods: {
+      animation() {
+        // 献花文字执行动画
+        this.animate(
+          '.txt',
+          [
+            { scale: [1, 1], translateX: '-50%', ease: 'bounce' },
+            { scale: [1.3, 1.3], translateX: '-40%', ease: 'bounce' },
+            { scale: [1, 1], translateX: '-50%' }
+          ],
+          1000
+        )
+      },
       closePopup() {
-        console.log('点击关闭')
+        this.triggerEvent('close')
       }
     }
   })

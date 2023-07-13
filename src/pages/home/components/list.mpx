@@ -51,11 +51,10 @@
       },
       // 跳到学习预约页
       jumpStudy() {
-
+        wx.navigateTo({ url: `/pages/study/index` })
       },
       // 跳到详情页
       jumpDetail(id) {
-        console.log('跳了， ', id)
         wx.navigateTo({ url: `/pages/detail/index?id=${id}` })
       }
     }

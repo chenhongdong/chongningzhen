@@ -6,9 +6,12 @@ export const GET_SCENIC_SPOT_FIND = BASE_URL + '/api/posts/home/scenic_spot/find
 export const GET_SCENIC_SPOT_DETAIL = BASE_URL + '/api/posts/home/scenic_spot/find'
 // 通过别名获取banner
 export const GET_AD_BANNER = BASE_URL + '/api/meta/home/banner/advertising/findByAliasLoadSubList'
+// 通过最小时间获取预约课程
+export const GET_COURSE = BASE_URL + '/api/posts/home/booking_plan/findPagingByMinDate'
 
 export default {
     GET_SCENIC_SPOT_FIND,
     GET_SCENIC_SPOT_DETAIL,
-    GET_AD_BANNER
+    GET_AD_BANNER,
+    GET_COURSE
 }

@@ -16,6 +16,7 @@
   "dependencies": {
     "@mpxjs/api-proxy": "^2.5.10",
     "@mpxjs/core": "^2.6.31",
+    "animate.css": "^4.1.1",
     "threejs-miniprogram": "^0.0.8",
     "vue": "^2.6.10",
     "vue-i18n": "^8.15.3"

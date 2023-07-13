@@ -20,7 +20,7 @@
       "./pages/open/index",
       "./pages/home/index",
       "./pages/profile/index",
-      "./pages/wuyifengbei/index",
+      "./pages/study/index",
       "./pages/detail/index"
     ],
     "tabBar": {

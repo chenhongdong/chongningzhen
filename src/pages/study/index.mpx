@@ -1,0 +1,258 @@
+<template>
+  <view class="study">
+    <view class="title_bar">陕西省渭南市崇凝镇红色旅游基地</view>
+    <view class="box">
+      <view class="course">
+        <view class="title">选择预约学习课程</view>
+        <view class="content">
+          <view
+            wx:for="{{scenicSpotList[current]}}"
+            class="item"
+            catchtap="selectCourse(item, index)"
+          >
+            <view class="icon {{item.selected ? 'ok' : ''}}"></view>
+            <view class="name">{{ item.name }}</view>
+          </view>
+        </view>
+      </view>
+      <view class="course date">
+        <view class="title">选择学习日期</view>
+        <view class="content">
+          <view
+            class="item {{item.isClosing ? 'close' : ''}} {{item.selected ? 'active' : ''}}"
+            wx:for="{{selectDate}}"
+            catchtap="selectTime(item, index)"
+          >
+            <view class="time">{{ item.time }}</view>
+            <view class="status">{{ item.isClosing ? '闭馆' : '可预约' }}</view>
+          </view>
+        </view>
+      </view>
+      <view class="course info">
+        <view class="title">填写学习预约信息</view>
+        <view class="content">
+          <view class="option">
+            <view class="name">来访人数：</view>
+            <input type="text" class="inp" />
+          </view>
+          <view class="option">
+            <view class="name">联系人姓名：</view>
+            <input type="text" class="inp" />
+          </view>
+          <view class="option">
+            <view class="name">联系电话：</view>
+            <input type="text" class="inp" />
+          </view>
+          <text class="tip">* 为保证各单位/组织学习的有效安排，请提前1天取消预约</text>
+        </view>
+      </view>
+      <view class="submit">立即预约</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import { createPage } from '@mpxjs/core'
+  import ApiConfig from '@/api/config'
+  // 给月份和日期进行补0
+  const addZero = (n) => (n < 9 ? '0' + n : '' + n)
+
+  createPage({
+    data: {
+      selectDate: [],
+      appointDate: 0,
+      scenicSpotList: [],
+      current: 0,
+      selectCourseArr: [] // 记录选择了哪些课程
+    },
+    onLoad() {
+      this.getCourseData()
+    },
+    methods: {
+      // 选择日期
+      selectTime(item, idx) {
+        // 如果闭馆了就不能点击了
+        if (item.isClosing) return
+        this.current = idx
+        this.selectDate.forEach((item) => {
+          item.selected = false
+        })
+        // 选中的日期高亮
+        this.selectDate[idx].selected = true
+      },
+      // 选择课程
+      selectCourse(course, idx) {
+        const { scenicSpotList, current, selectCourseArr } = this
+        if (!course.selected) {
+          selectCourseArr[idx] = course.id
+        } else {
+          selectCourseArr[idx] = ''
+        }
+        console.log('加入', selectCourseArr)
+        scenicSpotList[current][idx].selected = !course.selected
+      },
+      getCourseData() {
+        // const d = new Date()
+        // const minDate = `${d.getFullYear()}${addZero(d.getMonth() + 1)}${addZero(d.getDate())}`
+        wx.request({
+          url: ApiConfig.GET_COURSE,
+          data: {
+            // minDate,   todo
+            minDate: '20230713'
+          },
+          success: (res) => {
+            const { status, data } = res.data
+            if (status === 'ok') {
+              data.content.forEach((item, idx) => {
+                const d = new Date(item.appointDate)
+                // 将日期格式化后存入可选日期数组中
+                const time = `${addZero(d.getMonth() + 1)}/${addZero(d.getDate())}`
+                this.selectDate.push({
+                  time,
+                  isClosing: item.isClosing,
+                  selected: false
+                })
+                // 将课程放入景点数组中方便遍历
+                const scenicSpotName = item.scenicSpotList.map((item) => ({
+                  name: item.name,
+                  id: item.id,
+                  selected: false
+                }))
+                this.scenicSpotList.push(scenicSpotName)
+              })
+            }
+          }
+        })
+      }
+    }
+  })
+</script>
+
+<style lang="stylus" scoped>
+  .study
+    height 100vh
+    background-color #f2f3f5
+    .title_bar
+      width 100%
+      height 90rpx
+      line-height 90rpx
+      background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/a892d79492a02203f1a92c4016580cc7064ae26f3cf0d2cf309b114716e9758b.jpg') no-repeat
+      background-size 100% 100%
+      text-align center
+      font-size 40rpx
+      color #fff
+    .box
+      display flex
+      flex-direction column
+      .course
+        width calc(100% - 80rpx)
+        margin 0 auto
+        .title
+          padding-top 30rpx
+          padding-bottom 12rpx
+          font-size 30rpx
+          color #e64340
+        .content
+          position relative
+          width 100%
+          padding 30rpx
+          background-color #fff
+          box-sizing border-box
+          &:before
+            content ''
+            position absolute
+            left -20rpx
+            top -6rpx
+            width 108rpx
+            height 16rpx
+            background url('https://hongselvyou.lndx-study.beihero.com/file/png/2096ca3e6a56c29bfe878a6c95e267a2450371f9573f9671394bab287c3f2d56.png') no-repeat
+            background-size 100% 100%
+          .item
+            display flex
+            align-items center
+            padding-top 30rpx
+            &:first-child
+              padding 0
+            .icon
+              width 24rpx
+              height 24rpx
+              margin-right 10rpx
+              background url('https://hongselvyou.lndx-study.beihero.com/file/png/24b2110a0451e4bd6d8a00b2b8fef849d74c1316ee333ce24c885d6e882db73c.png') no-repeat
+              background-size 100% 100%
+              &.ok
+                background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/c1e3e8c8c8d5afb4f82ba54d59f7c869ab13d8156583e7dcc5ede7ac5351ee2c.png')
+            .name
+              font-size 24rpx
+              color #4b4747
+        &.date
+          .content
+            display flex
+            justify-content space-between
+            flex-wrap wrap
+            padding-bottom 0
+            .item
+              flex-direction column
+              justify-content center
+              width 130rpx
+              height 90rpx
+              padding-top 0
+              margin-bottom 30rpx
+              border 2rpx solid #00b42a
+              border-radius 12rpx
+              background-color #fff
+              box-sizing border-box
+              &.active
+                border-color #b80d0a
+                background-color #e64340
+                .time, .status
+                  color #fff
+              &.close
+                border-color #c6c6c6
+                background-color #ebecef
+              .time
+                font-size 28rpx
+                color #4b4747
+              .status
+                font-size 24rpx
+                color #4b4747
+        &.info
+          .content
+            text-align center
+            .option
+              display flex
+              justify-content space-between
+              align-items center
+              margin-bottom 30rpx
+              text-align left
+              .name
+                width 145rpx
+                font-size 24rpx
+                color #4b4747
+              .inp
+                width 444rpx
+                height 60rpx
+                background-color #f2f3f5
+                border 2rpx #e5e6eb solid
+                border-radius 12rpx
+            .tip
+              font-size 20rpx
+              color #959595
+      .submit
+        width 230rpx
+        height 66rpx
+        line-height 62rpx
+        margin 30rpx auto 0
+        background url("https://hongselvyou.lndx-study.beihero.com/file/png/d86b766274fe0ba3dddbe61e21d9ee653967be7c77ec4dab1b6a8e5c66d6722d.png") no-repeat
+        background-size 100% 100%
+        text-align center
+        font-size 26rpx
+        color #fff
+</style>
+
+<script type="application/json">
+  {
+    "component": true,
+    "usingComponents": {},
+    "disableScroll": true
+  }
+</script>
