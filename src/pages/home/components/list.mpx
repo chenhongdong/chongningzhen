@@ -67,7 +67,7 @@
     left 70rpx
     top 70rpx
     width 650rpx
-    height 1210rpx
+    height 1520rpx
     background url('https://hongselvyou.lndx-study.beihero.com/file/png/8dfa4d46e4414fbf5d3e26ae90ffa3143a746bba97553d49364f478d96c85809.png') no-repeat
     background-size 100% 100%
     .item

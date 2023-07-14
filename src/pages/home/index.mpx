@@ -14,9 +14,10 @@
 
   const supports = [
     [{ icon: ICON_VIDEO, txt: '支持视频介绍' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
-    [{ icon: ICON_VIDEO, txt: '支持视频介绍' }, { icon: ICON_FLOWER, txt: '支持云端敬献献花' }],
-    [{ icon: ICON_VIDEO, txt: '支持视频介绍' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
-    [{ icon: ICON_VIDEO, txt: '支持视频介绍' }, { icon: ICON_FAV, txt: '支持党史学习预约' }]
+    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FLOWER, txt: '支持党史学习预约' }],
+    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
+    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
+    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FAV, txt: '支持党史学习预约' }]
   ]
   createPage({
     data: {
@@ -27,6 +28,17 @@
     onLoad() {
       this.getAdBannerData()
       this.getListData()
+    },
+    pageLifetimes: {
+      show() {
+        if (typeof this.getTabBar === 'function') {
+          this.getTabBar((tabBar) => {
+            tabBar.setData({
+              selected: 0
+            })
+          })
+        }
+      }
     },
     methods: {
       // 获取首页Banner图片

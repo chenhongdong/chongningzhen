@@ -1,5 +1,6 @@
 <template>
   <view class="tab-bar">
+    <view class="tab-bar-border"></view>
     <view
       wx:for="{{list}}"
       wx:key="index"
@@ -9,9 +10,8 @@
       class="tab-bar-item"
     >
       <image src="{{ selected === index ? item.selectIcon : item.icon }}" class="icon"></image>
-      <view style="color: {{ selected === index ? selectedColor : color }}">{{item.text}}</view>
-      </view
-    >
+      <view style="color: {{ selected === index ? selectedColor : color }}">{{ item.text }}</view>
+    </view>
   </view>
 </template>
 
@@ -25,75 +25,70 @@
   createComponent({
     data: {
       selected: 0,
-      color: '#7A7E83',
-      selectedColor: '#3cc51f',
+      color: '#4b4748',
+      selectedColor: '#e64340',
       list: [
         {
           pagePath: '/pages/home/index',
           text: '首页',
           icon: HOME_ICON,
-          selectIcon: HOME_ICON_SELECT,
-          id: 0
+          selectIcon: HOME_ICON_SELECT
         },
         {
           pagePath: '/pages/profile/index',
           text: '我的',
           icon: MINE_ICON,
-          selectIcon: MINE_ICON_SELECT,
-          id: 1
+          selectIcon: MINE_ICON_SELECT
         }
       ]
     },
+    lifetimes: {
+      attached() {
+        // this.getInstance()
+      }
+    },
     methods: {
-      switchTab (e) {
+      switchTab(e) {
         const data = e.currentTarget.dataset
         const url = data.path
         wx.switchTab({ url })
-        this.selected = data.index
       }
     }
   })
 </script>
 
-<style scoped>
-.tab-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 48px;
-  background: white;
-  display: flex;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.tab-bar-border {
-  background-color: rgba(0, 0, 0, 0.33);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 1px;
-  transform: scaleY(0.5);
-}
-
-.tab-bar-item {
-  flex: 1;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.tab-bar-item .icon {
-  width: 27px;
-  height: 27px;
-}
-
-.tab-bar-item cover-view {
-  font-size: 10px;
-}
+<style lang="stylus" scoped>
+  .tab-bar
+    position fixed
+    bottom 0
+    left 0
+    right 0
+    height 98rpx
+    background white
+    display flex
+    padding-bottom env(safe-area-inset-bottom)
+    .tab-bar-border
+      background-color #e6e6e6
+      position absolute
+      left 0
+      top 0
+      width 100%
+      height 2rpx
+    .tab-bar-item
+      flex 1
+      text-align center
+      display flex
+      justify-content center
+      align-items center
+      flex-direction column
+      padding-top 10rpx
+      &:last-child
+        border-left-width 2rpx
+        border-left-color #e6e6e6
+        border-left-style solid
+      .icon
+        width 44rpx
+        height 44rpx
 </style>
 
 <script type="application/json">

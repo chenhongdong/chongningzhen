@@ -8,10 +8,11 @@
           <view
             wx:for="{{scenicSpotList[current]}}"
             class="item"
+            wx:key="index"
             catchtap="selectCourse(item, index)"
           >
             <view class="icon {{item.selected ? 'ok' : ''}}"></view>
-            <view class="name">{{ item.name }}</view>
+            <view class="name">{{ item.name }} {{ item.other }}</view>
           </view>
         </view>
       </view>
@@ -21,6 +22,7 @@
           <view
             class="item {{item.isClosing ? 'close' : ''}} {{item.selected ? 'active' : ''}}"
             wx:for="{{selectDate}}"
+            wx:key="index"
             catchtap="selectTime(item, index)"
           >
             <view class="time">{{ item.time }}</view>
@@ -33,20 +35,20 @@
         <view class="content">
           <view class="option">
             <view class="name">来访人数：</view>
-            <input type="text" class="inp" />
+            <input type="text" class="inp" wx:model="{{visitorCount}}" />
           </view>
           <view class="option">
             <view class="name">联系人姓名：</view>
-            <input type="text" class="inp" />
+            <input type="text" class="inp" wx:model="{{contactName}}" />
           </view>
           <view class="option">
             <view class="name">联系电话：</view>
-            <input type="text" class="inp" />
+            <input type="text" class="inp" wx:model="{{contactPhone}}" />
           </view>
           <text class="tip">* 为保证各单位/组织学习的有效安排，请提前1天取消预约</text>
         </view>
       </view>
-      <view class="submit">立即预约</view>
+      <view class="submit" catchtap="handleSubmit">立即预约</view>
     </view>
   </view>
 </template>
@@ -56,6 +58,12 @@
   import ApiConfig from '@/api/config'
   // 给月份和日期进行补0
   const addZero = (n) => (n < 9 ? '0' + n : '' + n)
+  // 将课程内容、时间、授课人添加到课程学习选择中
+  const other = [
+    '大松树下话初心 30min 王娟妮',
+    '崇凝大庙忆烽火 30min 李超',
+    '长稔书院悟思想 30min 陈新利'
+  ]
 
   createPage({
     data: {
@@ -63,12 +71,38 @@
       appointDate: 0,
       scenicSpotList: [],
       current: 0,
-      selectCourseArr: [] // 记录选择了哪些课程
+      selectCourseArr: [], // 记录选择了哪些课程
+      visitorCount: '',
+      contactName: '',
+      contactPhone: ''
     },
     onLoad() {
       this.getCourseData()
     },
     methods: {
+      // 提交预约
+      handleSubmit() {
+        const { appointDate, selectCourseArr, visitorCount, contactName, contactPhone } = this
+        console.log(appointDate, visitorCount, contactName, contactPhone, selectCourseArr)
+
+        // wx.request({
+        //   url: ApiConfig.ADD_STUDY_USER,
+        //   method: 'POST',
+        //   header: {
+        //     token: ''
+        //   },
+        //   data: {
+        //     appointDate,
+        //     visitorCount,
+        //     contactName,
+        //     contactPhone,
+        //     scenicSpotIdList: selectCourseArr
+        //   },
+        //   success: (res) => {
+        //     console.log('发送请求', res)
+        //   }
+        // })
+      },
       // 选择日期
       selectTime(item, idx) {
         // 如果闭馆了就不能点击了
@@ -77,8 +111,17 @@
         this.selectDate.forEach((item) => {
           item.selected = false
         })
+        console.log('哈哈哈', this.scenicSpotList)
+        this.scenicSpotList.forEach((child) => {
+          child.forEach(item => {
+            item.selected = false
+          })
+        })
         // 选中的日期高亮
         this.selectDate[idx].selected = true
+        // 更新预约时间参数
+        this.appointDate = item.appointDate
+        this.selectCourseArr = []
       },
       // 选择课程
       selectCourse(course, idx) {
@@ -110,13 +153,15 @@
                 this.selectDate.push({
                   time,
                   isClosing: item.isClosing,
-                  selected: false
+                  selected: false,
+                  appointDate: item.appointDate
                 })
                 // 将课程放入景点数组中方便遍历
-                const scenicSpotName = item.scenicSpotList.map((item) => ({
+                const scenicSpotName = item.scenicSpotList.map((item, idx) => ({
                   name: item.name,
                   id: item.id,
-                  selected: false
+                  selected: false,
+                  other: other[idx]
                 }))
                 this.scenicSpotList.push(scenicSpotName)
               })
@@ -242,7 +287,7 @@
         height 66rpx
         line-height 62rpx
         margin 30rpx auto 0
-        background url("https://hongselvyou.lndx-study.beihero.com/file/png/d86b766274fe0ba3dddbe61e21d9ee653967be7c77ec4dab1b6a8e5c66d6722d.png") no-repeat
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/d86b766274fe0ba3dddbe61e21d9ee653967be7c77ec4dab1b6a8e5c66d6722d.png') no-repeat
         background-size 100% 100%
         text-align center
         font-size 26rpx

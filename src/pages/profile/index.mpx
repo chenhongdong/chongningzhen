@@ -1,19 +1,104 @@
 <template>
-  <view>我的</view>
+  <view class="profile">
+    <view class="top_bar">
+      <view class="avatar" catchtap="loginMp">
+        <image src="{{avatar}}" class="img"  />
+        <!-- <button class="btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
+        <!-- <button  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button> -->
+      </view>
+      <view class="nickname">{{ nickname.length > 0 ? nickname : '请登录' }}</view>
+    </view>
+    <list />
+  </view>
 </template>
 
 <script>
   import { createPage } from '@mpxjs/core'
+  import DEF_AVATAR from '@/assets/images/avatar_def.png'
+  import ApiConfig from '@/api/config'
 
   createPage({
-    onLoad () {}
+    data: {
+      avatar: DEF_AVATAR,
+      // avatar: '',
+      nickname: ''
+    },
+    onLoad() {
+    },
+    pageLifetimes: {
+      show() {
+        if (typeof this.getTabBar === 'function') {
+          this.getTabBar((tabBar) => {
+            tabBar.setData({
+              selected: 1
+            })
+          })
+        }
+      }
+    },
+    methods: {
+      getPhoneNumber(e) {
+        console.log('手机号：', e.detail.code)
+      },
+      loginMp() {
+        wx.login({
+          success: (res) => {
+            if (res.code) {
+              wx.request({
+                url: ApiConfig.OPENID_VERIFY,
+                method: 'POST',
+                data: {
+                  code: res.code
+                },
+                success: (data) => {
+                  console.log('我看看你是啥： ', data)
+                }
+              })
+            } else {
+              console.log('登录失败！' + res.errMsg)
+            }
+          }
+        })
+      }
+    }
   })
 </script>
+
+<style lang="stylus" scoped>
+  .profile
+    height 100vh
+    background-color #f2f3f5
+    .top_bar
+      display flex
+      align-items center
+      width 100%
+      height 200rpx
+      background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/42d4b653674b2c854f29cff8186ba275553a53728f77c4e5c903d830f01af250.jpg') no-repeat
+      background-size 100% 100%
+      .avatar
+        width 80rpx
+        height 80rpx
+        margin-left 80rpx
+        border-radius 50%
+        overflow hidden
+        .img
+          width 100%
+          height 100%
+        .btn
+          width 100%
+          height 100%
+          background url('https://hongselvyou.lndx-study.beihero.com/file/png/4539a07e2bbf84eabdf04582a0f6bd6a1cd75f3c2597c48e20ec8aab8b045bb9.png') no-repeat
+          background-size 100% 100%
+      .nickname
+        padding-left 20rpx
+        font-size 32rpx
+        color #fff
+</style>
 
 <script type="application/json">
   {
     "usingComponents": {
-      
+      "list": "./components/list"
     }
   }
 </script>
