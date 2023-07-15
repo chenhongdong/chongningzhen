@@ -8,6 +8,9 @@
       />
       <view class="tip">暂无预约信息</view>
     </view>
+    <view wx:else class="list">
+
+    </view>
   </view>
 </template>
 
@@ -16,7 +19,8 @@
 
   createComponent({
     data: {
-      isEmpty: true
+      isEmpty: true,
+      listData: []
     },
     lifetimes: {
       attached() {}

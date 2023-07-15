@@ -3,12 +3,10 @@
     <view class="top_bar">
       <view class="avatar" catchtap="loginMp">
         <image src="{{avatar}}" class="img"  />
-        <!-- <button class="btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
-        <!-- <button  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button> -->
       </view>
       <view class="nickname">{{ nickname.length > 0 ? nickname : '请登录' }}</view>
     </view>
-    <list />
+    <list listData="{{listData}}" />
   </view>
 </template>
 
@@ -21,7 +19,8 @@
     data: {
       avatar: DEF_AVATAR,
       // avatar: '',
-      nickname: ''
+      nickname: '',
+      listData: []
     },
     onLoad() {
     },
@@ -37,9 +36,6 @@
       }
     },
     methods: {
-      getPhoneNumber(e) {
-        console.log('手机号：', e.detail.code)
-      },
       loginMp() {
         wx.login({
           success: (res) => {
