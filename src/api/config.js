@@ -8,16 +8,28 @@ export const GET_SCENIC_SPOT_DETAIL = BASE_URL + '/api/posts/home/scenic_spot/fi
 export const GET_AD_BANNER = BASE_URL + '/api/meta/home/banner/advertising/findByAliasLoadSubList'
 // 通过最小时间获取预约课程
 export const GET_COURSE = BASE_URL + '/api/posts/home/booking_plan/findPagingByMinDate'
-// 添加预约
-export const ADD_STUDY_USER = BASE_URL + '/api/posts/home/user_booking/addByCurrentUser'
 // 微信OpenId
 export const OPENID_VERIFY = BASE_URL + '/api/user/home/wxAuth/loginByWxOpenId'
+// 更新用户资料
+export const UPDATE_USER_PROFILE = BASE_URL + '/api/user/home/orgUser/updateCurrentUserProfile'
+// 获取我的学习预约
+export const GET_MY_STUDY = BASE_URL + '/api/posts/home/user_booking/findPagingByCurrentUser'
+// 添加预约
+export const ADD_STUDY_USER = BASE_URL + '/api/posts/home/user_booking/addByCurrentUser'
+// 取消预约
+export const DEL_STUDY_USER = BASE_URL + '/api/posts/home/user_booking/deleteByCurrentUser'
+// 刷新令牌
+export const REFRESH_TOKEN = BASE_URL + '/api/user/home/wxAuth/refreshToken'
 
 export default {
     GET_SCENIC_SPOT_FIND,
     GET_SCENIC_SPOT_DETAIL,
     GET_AD_BANNER,
     GET_COURSE,
+    OPENID_VERIFY,
+    UPDATE_USER_PROFILE,
+    GET_MY_STUDY,
     ADD_STUDY_USER,
-    OPENID_VERIFY
+    DEL_STUDY_USER,
+    REFRESH_TOKEN
 }

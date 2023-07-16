@@ -1,12 +1,25 @@
 <template>
   <view class="profile">
     <view class="top_bar">
+      <!-- <button bindtap="getUserProfile">获取头像昵称</button> -->
       <view class="avatar" catchtap="loginMp">
-        <image src="{{avatar}}" class="img"  />
+        <image src="{{userInfo.avatar}}" class="img" />
       </view>
-      <view class="nickname">{{ nickname.length > 0 ? nickname : '请登录' }}</view>
+      <view class="nickname" catchtap="loginMp">{{
+        userInfo.nick.length > 0 ? userInfo.nick : '请登录'
+      }}</view>
     </view>
-    <list listData="{{listData}}" />
+    <view class="my_list">
+      <view class="title">我的预约</view>
+      <list wx:if="{{listData.length > 0}}" listData="{{listData}}" bindcancel="cancelStudy" />
+      <view class="empty" wx:else>
+        <image
+          class="img"
+          src="https://hongselvyou.lndx-study.beihero.com/file/png/83294ef4216687320fa75e282174fd37c48cbef9cf1a2cbaf7b8e808c4f0815a.png"
+        />
+        <view class="tip">暂无预约信息</view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -14,18 +27,24 @@
   import { createPage } from '@mpxjs/core'
   import DEF_AVATAR from '@/assets/images/avatar_def.png'
   import ApiConfig from '@/api/config'
+  
+  const defUserInfo = { avatar: DEF_AVATAR, nick: '' }
+  // 给月份和日期进行补0
+  const addZero = (n) => (n < 9 ? '0' + n : '' + n)
 
   createPage({
     data: {
-      avatar: DEF_AVATAR,
-      // avatar: '',
-      nickname: '',
+      userInfo: defUserInfo,
       listData: []
     },
     onLoad() {
+      this.refresh()
     },
     pageLifetimes: {
       show() {
+        // 刷新列表数据
+        this.refresh()
+
         if (typeof this.getTabBar === 'function') {
           this.getTabBar((tabBar) => {
             tabBar.setData({
@@ -36,6 +55,67 @@
       }
     },
     methods: {
+      refresh() {
+        const token = wx.getStorageSync('token') || ''
+        if (token) {
+          this.getListData()
+          // 拿到登录后用户的数据用来展示头像和昵称
+          const info = (wx.getStorageSync('userInfo') && JSON.parse(wx.getStorageSync('userInfo'))) || defUserInfo
+          this.userInfo = info
+        } else {
+          this.listData = []
+        }
+      },
+      cancelStudy({ detail }) {
+        wx.showModal({
+          title: '确认要取消当前预约吗？',
+          success: (res) => {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              this.handleCancel(detail.id)
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+      },
+      handleCancel(id) {
+        const token = wx.getStorageSync('token') || ''
+        wx.request({
+          url: ApiConfig.DEL_STUDY_USER,
+          method: 'POST',
+          header: { token },
+          data: { id },
+          success: (res) => {
+            const { status } = res.data
+            if (status === 'ok') {
+              // 重新请求一次列表接口
+              this.getListData()
+            }
+          }
+        })
+      },
+      getListData() {
+        const token = wx.getStorageSync('token') || ''
+        wx.request({
+          url: ApiConfig.GET_MY_STUDY,
+          header: { token },
+          success: (res) => {
+            const { status, data } = res.data
+            if (status === 'ok') {
+              const validInfo = data?.content.map((item) => {
+                const d = new Date(item.appointDate)
+                const year = d.getFullYear()
+                const month = addZero(d.getMonth() + 1)
+                const day = addZero(d.getDate())
+                const time = year + '-' + month + '-' + day
+                return { id: item.id, time }
+              })
+              this.listData = validInfo
+            }
+          }
+        })
+      },
       loginMp() {
         wx.login({
           success: (res) => {
@@ -43,11 +123,24 @@
               wx.request({
                 url: ApiConfig.OPENID_VERIFY,
                 method: 'POST',
-                data: {
-                  code: res.code
-                },
-                success: (data) => {
-                  console.log('我看看你是啥： ', data)
+                data: { code: res.code },
+                success: (val) => {
+                  const { status, data } = val.data
+                  if (status === 'ok') {
+                    const { userToken, userInfo } = data
+                    this.userInfo = userInfo
+                    try {
+                      // token等信息存入Storage中方便获取
+                      wx.setStorageSync('token', userToken.token)
+                      wx.setStorageSync('refreshToken', userToken.refreshToken)
+                      wx.setStorageSync('userInfo', JSON.stringify(userInfo))
+                      // 登录成功后请求列表接口，渲染预约列表
+                      this.getListData()
+                      wx.showToast({ title: '登录成功' })
+                    } catch (e) {
+                      console.err(e)
+                    }
+                  }
                 }
               })
             } else {
@@ -89,6 +182,32 @@
         padding-left 20rpx
         font-size 32rpx
         color #fff
+    .my_list
+      height calc(100% - 498rpx)
+      padding 30rpx 40rpx
+      overflow auto
+      .title
+        font-size 30rpx
+        font-weight 600
+        color #e64340
+        &:after
+          content ''
+          display block
+          width 674rpx
+          height 14rpx
+          margin-top 7rpx
+          background url('https://hongselvyou.lndx-study.beihero.com/file/png/e8f639bea2f2435c02f71449c1ec91acfeda2beaa5090ba726a6e97149769181.png') no-repeat
+          background-size 100% 100%
+      .empty
+        padding-top 200rpx
+        text-align center
+        .img
+          width 304rpx
+          height 200rpx
+        .tip
+          padding-top 20rpx
+          font-size 40rpx
+          color #484848
 </style>
 
 <script type="application/json">

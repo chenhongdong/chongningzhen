@@ -1,11 +1,39 @@
 <script>
   import mpx, { createApp } from '@mpxjs/core'
   import apiProxy from '@mpxjs/api-proxy'
+  import ApiConfig from '@/api/config'
 
   mpx.use(apiProxy, { usePromise: true })
 
   createApp({
     onLaunch () {
+      // this.refreshToken()
+    },
+    methods: {
+      refreshToken() {
+        const token = wx.getStorageSync('token') || ''
+        const refreshToken = wx.getStorageSync('refreshToken') || ''
+        wx.request({
+          url: ApiConfig.REFRESH_TOKEN,
+          method: 'POST',
+          header: { token, refreshToken },
+          success: res => {
+            const { status, data } = res.data
+            if (status === 'ok') {
+              const { userToken, userInfo } = data
+              console.log('你好App:  ', userToken)
+              try {
+                // token等信息存入Storage中方便获取
+                wx.setStorageSync('token', userToken.token)
+                wx.setStorageSync('refreshToken', userToken.refreshToken)
+                wx.setStorageSync('userInfo', JSON.stringify(userInfo))
+              } catch (e) {
+                console.err(e)
+              }
+            }
+          }
+        })
+      }
     }
   })
 </script>

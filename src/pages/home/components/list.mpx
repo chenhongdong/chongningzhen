@@ -39,7 +39,6 @@
       attached() {
         const listData = this.handleListData(this.list)
         this.listData = listData
-        console.log('mounted你好', this.listData)
       }
     },
     methods: {
