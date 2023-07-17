@@ -75,6 +75,7 @@
           .cancel
             width 40rpx
             height 40rpx
+            margin-top -14rpx
             margin-left 10rpx
             font-size 20rpx
             color #727071

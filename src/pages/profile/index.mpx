@@ -2,13 +2,16 @@
   <view class="profile">
     <view class="top_bar">
       <!-- <button bindtap="getUserProfile">获取头像昵称</button> -->
-      <view class="avatar" catchtap="loginMp">
-        <image src="{{userInfo.avatar}}" class="img" />
+      <view class="info" catchtap="getUserProfile">
+        <view class="avatar">
+          <image src="{{userInfo.avatar}}" class="img" />
+        </view>
+        <view class="nickname">{{
+          userInfo.nick.length > 0 ? userInfo.nick : '请登录'
+        }}</view>
       </view>
-      <view class="nickname" catchtap="loginMp">{{
-        userInfo.nick.length > 0 ? userInfo.nick : '请登录'
-      }}</view>
     </view>
+    <userInfo />
     <view class="my_list">
       <view class="title">我的预约</view>
       <list wx:if="{{listData.length > 0}}" listData="{{listData}}" bindcancel="cancelStudy" />
@@ -27,7 +30,7 @@
   import { createPage } from '@mpxjs/core'
   import DEF_AVATAR from '@/assets/images/avatar_def.png'
   import ApiConfig from '@/api/config'
-  
+
   const defUserInfo = { avatar: DEF_AVATAR, nick: '' }
   // 给月份和日期进行补0
   const addZero = (n) => (n < 9 ? '0' + n : '' + n)
@@ -55,12 +58,41 @@
       }
     },
     methods: {
+      getUserProfile() {
+        this.loginMp()
+        console.log('走这里')
+        wx.getUserProfile({
+          desc: '用于完善资料',
+          success: (res) => {
+            console.log('哈哈', res)
+            const { avatarUrl: avatar, nickName: nick, gender } = res.userInfo
+            this.userInfo = { nick, avatar }
+            this.updateUserProfile({ nick, avatar, gender, fullName: nick })
+          }
+        })
+      },
+      // 更新用户资料
+      updateUserProfile(params = {}) {
+        const token = wx.getStorageSync('token') || ''
+        if (!token) return
+        wx.request({
+          url: ApiConfig.UPDATE_USER_PROFILE,
+          method: 'POST',
+          header: { token },
+          data: { ...params },
+          success: (res) => {
+            console.log('更新用户资料： ', res)
+          }
+        })
+      },
       refresh() {
         const token = wx.getStorageSync('token') || ''
         if (token) {
           this.getListData()
           // 拿到登录后用户的数据用来展示头像和昵称
-          const info = (wx.getStorageSync('userInfo') && JSON.parse(wx.getStorageSync('userInfo'))) || defUserInfo
+          const info =
+            (wx.getStorageSync('userInfo') && JSON.parse(wx.getStorageSync('userInfo'))) ||
+            defUserInfo
           this.userInfo = info
         } else {
           this.listData = []
@@ -97,6 +129,7 @@
       },
       getListData() {
         const token = wx.getStorageSync('token') || ''
+        if (!token) return
         wx.request({
           url: ApiConfig.GET_MY_STUDY,
           header: { token },
@@ -117,6 +150,9 @@
         })
       },
       loginMp() {
+        const token = wx.getStorageSync('token') || ''
+        // 如果有token值了，就不再调登录了
+        if (token) return
         wx.login({
           success: (res) => {
             if (res.code) {
@@ -136,7 +172,8 @@
                       wx.setStorageSync('userInfo', JSON.stringify(userInfo))
                       // 登录成功后请求列表接口，渲染预约列表
                       this.getListData()
-                      wx.showToast({ title: '登录成功' })
+                      // wx.showToast({ title: '登录成功' })
+                      // this.getUserProfile()
                     } catch (e) {
                       console.err(e)
                     }
@@ -158,30 +195,32 @@
     height 100vh
     background-color #f2f3f5
     .top_bar
-      display flex
-      align-items center
       width 100%
       height 200rpx
       background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/42d4b653674b2c854f29cff8186ba275553a53728f77c4e5c903d830f01af250.jpg') no-repeat
       background-size 100% 100%
-      .avatar
-        width 80rpx
-        height 80rpx
-        margin-left 80rpx
-        border-radius 50%
-        overflow hidden
-        .img
-          width 100%
-          height 100%
-        .btn
-          width 100%
-          height 100%
-          background url('https://hongselvyou.lndx-study.beihero.com/file/png/4539a07e2bbf84eabdf04582a0f6bd6a1cd75f3c2597c48e20ec8aab8b045bb9.png') no-repeat
-          background-size 100% 100%
-      .nickname
-        padding-left 20rpx
-        font-size 32rpx
-        color #fff
+      .info
+        display flex
+        align-items center
+        height 100%
+        .avatar
+          width 80rpx
+          height 80rpx
+          margin-left 80rpx
+          border-radius 50%
+          overflow hidden
+          .img
+            width 100%
+            height 100%
+          .btn
+            width 100%
+            height 100%
+            background url('https://hongselvyou.lndx-study.beihero.com/file/png/4539a07e2bbf84eabdf04582a0f6bd6a1cd75f3c2597c48e20ec8aab8b045bb9.png') no-repeat
+            background-size 100% 100%
+        .nickname
+          padding-left 20rpx
+          font-size 32rpx
+          color #fff
     .my_list
       height calc(100% - 498rpx)
       padding 30rpx 40rpx

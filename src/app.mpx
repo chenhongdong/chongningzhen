@@ -6,22 +6,23 @@
   mpx.use(apiProxy, { usePromise: true })
 
   createApp({
-    onLaunch () {
-      // this.refreshToken()
+    onLaunch() {
+      this.refreshToken()
     },
     methods: {
       refreshToken() {
         const token = wx.getStorageSync('token') || ''
         const refreshToken = wx.getStorageSync('refreshToken') || ''
+        if (!token || !refreshToken) return
         wx.request({
           url: ApiConfig.REFRESH_TOKEN,
           method: 'POST',
-          header: { token, refreshToken },
-          success: res => {
+          header: { token },
+          data: { refreshToken },
+          success: (res) => {
             const { status, data } = res.data
             if (status === 'ok') {
               const { userToken, userInfo } = data
-              console.log('你好App:  ', userToken)
               try {
                 // token等信息存入Storage中方便获取
                 wx.setStorageSync('token', userToken.token)
@@ -56,13 +57,16 @@
       "color": "#000000",
       "selectedColor": "#000000",
       "backgroundColor": "#000000",
-      "list": [{
-        "pagePath": "pages/home/index",
-        "text": "首页"
-      }, {
-        "pagePath": "pages/profile/index",
-        "text": "我的"
-      }]
+      "list": [
+        {
+          "pagePath": "pages/home/index",
+          "text": "首页"
+        },
+        {
+          "pagePath": "pages/profile/index",
+          "text": "我的"
+        }
+      ]
     },
     "lazyCodeLoading": "requiredComponents"
   }
