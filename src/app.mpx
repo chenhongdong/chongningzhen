@@ -68,7 +68,11 @@
         }
       ]
     },
-    "lazyCodeLoading": "requiredComponents"
+    "lazyCodeLoading": "requiredComponents",
+    "window": {
+      "navigationBarBackgroundColor": "#c80808",
+      "navigationBarTitleText": "红色美丽村庄崇凝"
+    }
   }
 </script>
 

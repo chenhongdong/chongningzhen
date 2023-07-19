@@ -2,20 +2,6 @@
   <view class="study" wx:if="{{!isOk}}">
     <view class="title_bar">陕西省渭南市崇凝镇红色旅游基地</view>
     <view class="box">
-      <view class="course">
-        <view class="title">选择预约学习课程</view>
-        <view class="content">
-          <view
-            wx:for="{{courseList}}"
-            class="item"
-            wx:key="index"
-            catchtap="selectCourse(item, index)"
-          >
-            <view class="icon {{item.selected ? 'ok' : ''}}"></view>
-            <view class="name">{{ item.txt }}</view>
-          </view>
-        </view>
-      </view>
       <view class="course date">
         <view class="title">选择学习日期</view>
         <view class="content">
@@ -30,12 +16,30 @@
           </view>
         </view>
       </view>
+      <view class="course">
+        <view class="title">选择预约学习课程</view>
+        <view class="content">
+          <view
+            wx:for="{{courseList}}"
+            class="item"
+            wx:key="index"
+            catchtap="selectCourse(item, index)"
+          >
+            <view class="name">{{ item.txt }}</view>
+            <view class="icon {{item.selected ? 'ok' : ''}}"></view>
+          </view>
+        </view>
+      </view>
       <view class="course info">
         <view class="title">填写学习预约信息</view>
         <view class="content">
           <view class="option">
             <view class="name">来访人数：</view>
             <input type="text" class="inp" wx:model="{{visitorCount}}" />
+          </view>
+          <view class="option">
+            <view class="name">来访单位：</view>
+            <input type="text" class="inp" wx:model="{{visitor}}" />
           </view>
           <view class="option">
             <view class="name">联系人姓名：</view>
@@ -86,6 +90,7 @@
       current: 0,
       selectCourseArr: [], // 记录选择了哪些课程
       visitorCount: '',
+      visitor: '',
       contactName: '',
       contactPhone: '',
       isOk: false
@@ -229,14 +234,11 @@
         courseList[idx].selected = !course.selected
       },
       getCourseData() {
-        // const d = new Date()
-        // const minDate = `${d.getFullYear()}${addZero(d.getMonth() + 1)}${addZero(d.getDate())}`
+        const d = new Date()
+        const minDate = `${d.getFullYear()}${addZero(d.getMonth() + 1)}${addZero(d.getDate())}`
         wx.request({
           url: ApiConfig.GET_COURSE,
-          data: {
-            // minDate,   todo
-            minDate: '20230713'
-          },
+          data: { minDate },
           success: (res) => {
             const { status, data } = res.data
             if (status === 'ok') {
@@ -262,6 +264,7 @@
 <style lang="stylus" scoped>
   .study
     height 100vh
+    padding-bottom 100rpx
     background-color #f2f3f5
     .title_bar
       width 100%
@@ -300,25 +303,24 @@
             background-size 100% 100%
           .item
             display flex
+            justify-content space-between
             align-items center
             padding-top 30rpx
             &:first-child
               padding 0
             .icon
-              width 24rpx
-              height 24rpx
-              margin-right 10rpx
+              width 30rpx
+              height 30rpx
               background url('https://hongselvyou.lndx-study.beihero.com/file/png/24b2110a0451e4bd6d8a00b2b8fef849d74c1316ee333ce24c885d6e882db73c.png') no-repeat
               background-size 100% 100%
               &.ok
                 background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/c1e3e8c8c8d5afb4f82ba54d59f7c869ab13d8156583e7dcc5ede7ac5351ee2c.png')
             .name
-              font-size 24rpx
+              font-size 26rpx
               color #4b4747
         &.date
           .content
             display flex
-            justify-content space-between
             flex-wrap wrap
             padding-bottom 0
             .item
@@ -327,11 +329,14 @@
               width 130rpx
               height 90rpx
               padding-top 0
+              margin-right 30rpx
               margin-bottom 30rpx
               border 2rpx solid #00b42a
               border-radius 12rpx
               background-color #fff
               box-sizing border-box
+              &:nth-of-type(4n)
+                margin-right 0
               &.active
                 border-color #b80d0a
                 background-color #e64340
@@ -344,7 +349,7 @@
                 font-size 28rpx
                 color #4b4747
               .status
-                font-size 24rpx
+                font-size 26rpx
                 color #4b4747
         &.info
           .content
@@ -356,8 +361,8 @@
               margin-bottom 30rpx
               text-align left
               .name
-                width 145rpx
-                font-size 24rpx
+                width 170rpx
+                font-size 26rpx
                 color #4b4747
               .inp
                 width 444rpx
@@ -365,8 +370,9 @@
                 background-color #f2f3f5
                 border 2rpx #e5e6eb solid
                 border-radius 12rpx
+                text-indent 20rpx
             .tip
-              font-size 20rpx
+              font-size 22rpx
               color #959595
       .submit
         width 230rpx
@@ -376,7 +382,7 @@
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/d86b766274fe0ba3dddbe61e21d9ee653967be7c77ec4dab1b6a8e5c66d6722d.png') no-repeat
         background-size 100% 100%
         text-align center
-        font-size 26rpx
+        font-size 28rpx
         color #fff
 </style>
 

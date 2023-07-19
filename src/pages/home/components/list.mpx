@@ -1,6 +1,6 @@
 <template>
   <view class="home-list">
-    <view wx:for="{{listData}}" wx:key="index" class="item">
+    <view wx:for="{{listData}}" wx:key="index" class="item" catchtap="jumpDetail(item.id)">
       <view class="pic">
         <image src="{{ item.coverUrl }}" class="bg" />
       </view>
@@ -13,8 +13,8 @@
           </view>
         </view>
         <view class="btns">
-          <view class="btn btn_study" catchtap="jumpStudy">学习预约 ></view>
-          <view class="btn btn_look" catchtap="jumpDetail(item.id)">查看详情 ></view>
+          <view class="btn btn_look">查看详情</view>
+          <view class="btn btn_study" catchtap="jumpStudy">学习预约</view>
         </view>
       </view>
     </view>
@@ -63,15 +63,15 @@
 <style lang="stylus" scoped>
   .home-list
     position absolute
-    left 70rpx
+    left 20rpx
     top 70rpx
-    width 650rpx
-    height 1520rpx
+    width 750rpx
+    height 1600rpx
     background url('https://hongselvyou.lndx-study.beihero.com/file/png/8dfa4d46e4414fbf5d3e26ae90ffa3143a746bba97553d49364f478d96c85809.png') no-repeat
     background-size 100% 100%
     .item
       display flex
-      padding 0 30rpx
+      padding 0 36rpx
       margin-top 30rpx
       &:first-child
         margin-top 180rpx
@@ -79,18 +79,22 @@
         display flex
         justify-content center
         align-items center
-        width 270rpx
+        width 300rpx
         height 200rpx
+        padding 6rpx
         background-color #e64340
         overflow hidden
         .bg
-          width 258rpx
-          height 188rpx
+          width 100%
+          height 100%
       .content
-        margin-left 20rpx
+        display flex
+        flex-direction column
+        justify-content space-evenly
+        margin-left 50rpx
         .title
           color #000
-          font-size 30rpx
+          font-size 32rpx
           font-weight 600
         .supports
           padding-top 10rpx
@@ -104,7 +108,7 @@
             .txt
               padding-left 10rpx
               color #000
-              font-size 20rpx
+              font-size 24rpx
         .btns
           display flex
           padding-top 24rpx

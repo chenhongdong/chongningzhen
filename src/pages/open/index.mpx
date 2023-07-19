@@ -10,6 +10,13 @@
 
   createPage({
     data: {},
+    lifetimes: {
+      attached() {
+        // wx.setNavigationBarColor({
+        //   backgroundColor: '#00cccc'
+        // })
+      }
+    },
     methods: {
       clickStart() {
         // 通过导航切换的方式跳转才可以

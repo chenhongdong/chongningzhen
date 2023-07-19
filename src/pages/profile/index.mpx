@@ -1,7 +1,6 @@
 <template>
   <view class="profile">
     <view class="top_bar">
-      <!-- <button bindtap="getUserProfile">获取头像昵称</button> -->
       <view class="info" catchtap="getUserProfile">
         <view class="avatar">
           <image src="{{userInfo.avatar}}" class="img" />
@@ -60,28 +59,11 @@
     methods: {
       getUserProfile() {
         this.loginMp()
-        console.log('走这里')
         wx.getUserProfile({
           desc: '用于完善资料',
           success: (res) => {
-            console.log('哈哈', res)
-            const { avatarUrl: avatar, nickName: nick, gender } = res.userInfo
+            const { avatarUrl: avatar, nickName: nick } = res.userInfo
             this.userInfo = { nick, avatar }
-            this.updateUserProfile({ nick, avatar, gender, fullName: nick })
-          }
-        })
-      },
-      // 更新用户资料
-      updateUserProfile(params = {}) {
-        const token = wx.getStorageSync('token') || ''
-        if (!token) return
-        wx.request({
-          url: ApiConfig.UPDATE_USER_PROFILE,
-          method: 'POST',
-          header: { token },
-          data: { ...params },
-          success: (res) => {
-            console.log('更新用户资料： ', res)
           }
         })
       },
@@ -172,8 +154,6 @@
                       wx.setStorageSync('userInfo', JSON.stringify(userInfo))
                       // 登录成功后请求列表接口，渲染预约列表
                       this.getListData()
-                      // wx.showToast({ title: '登录成功' })
-                      // this.getUserProfile()
                     } catch (e) {
                       console.err(e)
                     }
@@ -206,7 +186,7 @@
         .avatar
           width 80rpx
           height 80rpx
-          margin-left 80rpx
+          margin-left 40rpx
           border-radius 50%
           overflow hidden
           .img

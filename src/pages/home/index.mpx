@@ -13,11 +13,20 @@
   import ICON_FLOWER from '@/assets/images/icon_flower.png'
 
   const supports = [
-    [{ icon: ICON_VIDEO, txt: '支持视频介绍' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
-    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FLOWER, txt: '支持党史学习预约' }],
-    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
-    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FAV, txt: '支持党史学习预约' }],
-    [{ icon: ICON_VIDEO, txt: '支持云端敬献献花' }, { icon: ICON_FAV, txt: '支持党史学习预约' }]
+    [
+      { icon: ICON_VIDEO, txt: '支持视频介绍' },
+      { icon: ICON_FAV, txt: '支持党史学习预约' }
+    ],
+    [
+      { icon: ICON_VIDEO, txt: '支持文字介绍' },
+      { icon: ICON_FAV, txt: '支持党史学习预约' }
+    ],
+    [
+      { icon: ICON_VIDEO, txt: '支持文字介绍' },
+      { icon: ICON_FAV, txt: '支持党史学习预约' }
+    ],
+    [{ icon: ICON_FLOWER, txt: '支持云端敬献献花' }],
+    [{ icon: ICON_VIDEO, txt: '支持文字介绍' }]
   ]
   createPage({
     data: {
@@ -42,7 +51,7 @@
     },
     methods: {
       // 获取首页Banner图片
-      getAdBannerData () {
+      getAdBannerData() {
         wx.request({
           url: ApiConfig.GET_AD_BANNER,
           data: { alias: 'xcx_home_banner' },
@@ -82,9 +91,10 @@
   .home_wrapper
     position relative
     width 100%
-    height 100vh
+    height 110vh
     background url('https://hongselvyou.lndx-study.beihero.com/file/png/8487e88c2b254cd0e9d5f684c08ca507358fec0f13ede0ba26a79514c363da33.png') no-repeat
     background-size 100% 100%
+    overflow-x hidden
 </style>
 
 <script type="application/json">
