@@ -17,6 +17,9 @@
 
   createPage({
     data: {},
+    onShareAppMessage() {
+      return { title: '红色崇凝', path: '/pages/open/index' }
+    },
     methods: {
       clickStart() {
         // 通过导航切换的方式跳转才可以

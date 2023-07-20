@@ -12,7 +12,9 @@
             catchtap="selectTime(item, index)"
           >
             <view class="time">{{ item.time }}</view>
-            <view class="status">{{ item.isClosing ? '闭馆' : item.bookingFull ? '已约满' : '可预约' }}</view>
+            <view class="status">{{
+              item.isClosing ? '闭馆' : item.bookingFull ? '已约满' : '可预约'
+            }}</view>
           </view>
         </view>
       </view>
@@ -35,7 +37,7 @@
         <view class="content">
           <view class="option">
             <view class="name">来访人数：</view>
-            <input type="text" class="inp" wx:model="{{visitorCount}}" />
+            <input type="number" class="inp" wx:model="{{visitorCount}}" />
           </view>
           <view class="option">
             <view class="name">来访单位：</view>
@@ -47,7 +49,7 @@
           </view>
           <view class="option">
             <view class="name">联系电话：</view>
-            <input type="text" class="inp" wx:model="{{contactPhone}}" />
+            <input type="number" class="inp" wx:model="{{contactPhone}}" maxlength="11" />
           </view>
           <text class="tip">* 为保证各单位/组织学习的有效安排，请提前1天取消预约</text>
         </view>
@@ -81,6 +83,9 @@
     onLoad() {
       this.getCourseData()
     },
+    onShareAppMessage() {
+      return { title: '红色崇凝', path: '/pages/open/index' }
+    },
     methods: {
       loginMp() {
         wx.login({
@@ -104,7 +109,7 @@
                       console.err(e)
                     }
                   } else {
-                    wx.showToast({ title: exception?.message })
+                    wx.showToast({ title: exception?.message, icon: 'none' })
                   }
                 }
               })
@@ -116,7 +121,14 @@
       },
       // 提交预约
       handleSubmit() {
-        const { appointDate, selectCourseArr, visitorCount, contactName, contactPhone, visitingEnterprise } = this
+        const {
+          appointDate,
+          selectCourseArr,
+          visitorCount,
+          contactName,
+          contactPhone,
+          visitingEnterprise
+        } = this
         console.log(appointDate, visitorCount, contactName, contactPhone, selectCourseArr)
         const token = wx.getStorageSync('token') || ''
 
@@ -149,11 +161,11 @@
             scenicSpotIdList: selectCourseArr
           },
           success: (res) => {
-            const { status, data, exception } = res.data
+            const { status, exception } = res.data
             if (status === 'ok') {
               this.isOk = true
             } else {
-              wx.showToast({ title: exception?.message })
+              wx.showToast({ title: exception?.message, icon: 'none' })
             }
           }
         })
@@ -192,6 +204,7 @@
         // 如果闭馆了就不能点击了
         if (item.isClosing || item.bookingFull) {
           this.isForbid = true
+          wx.showToast({ title: '请选择可预约日期', icon: 'none' })
           return
         }
         this.isForbid = false
@@ -209,7 +222,7 @@
           item.selected = false
         })
         this.scenicSpotList.forEach((child) => {
-          child.forEach(item => {
+          child.forEach((item) => {
             item.selected = false
           })
         })
@@ -259,7 +272,7 @@
                 this.scenicSpotList.push(scenicSpotName)
               })
             } else {
-              wx.showToast({ title: exception?.message })
+              wx.showToast({ title: exception?.message, icon: 'none' })
             }
           }
         })
@@ -379,10 +392,11 @@
               .inp
                 width 444rpx
                 height 60rpx
+                padding-left 10rpx
                 background-color #f2f3f5
                 border 2rpx #e5e6eb solid
                 border-radius 12rpx
-                text-indent 20rpx
+                box-sizing border-box
             .tip
               font-size 22rpx
               color #959595
@@ -391,7 +405,7 @@
         height 86rpx
         line-height 80rpx
         margin 30rpx auto 0
-        background url('https://hongselvyou.lndx-study.beihero.com/file/png/d86b766274fe0ba3dddbe61e21d9ee653967be7c77ec4dab1b6a8e5c66d6722d.png') no-repeat
+        background url('https://hongselvyou.lndx-study.beihero.com/file/png/dfdbf7869c7c09d79ebee6b0a078359c7c38c9f0ce9804a5e12238d1053e9cc7.png') no-repeat
         background-size 100% 100%
         text-align center
         font-size 36rpx

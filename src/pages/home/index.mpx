@@ -11,23 +11,28 @@
   import ICON_VIDEO from '@/assets/images/icon_video.png'
   import ICON_FAV from '@/assets/images/icon_fav.png'
   import ICON_FLOWER from '@/assets/images/icon_flower.png'
-
+  import ICON_POS from '@/assets/images/icon_pos.png'
+  // 支持
   const supports = [
     [
       { icon: ICON_VIDEO, txt: '支持视频介绍' },
-      { icon: ICON_FAV, txt: '支持党史学习预约' }
+      { icon: ICON_FAV, txt: '支持党史学习' }
     ],
     [
-      { icon: ICON_VIDEO, txt: '支持文字介绍' },
-      { icon: ICON_FAV, txt: '支持党史学习预约' }
+      { icon: ICON_FAV, txt: '支持党史学习' },
+      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
     [
-      { icon: ICON_VIDEO, txt: '支持文字介绍' },
-      { icon: ICON_FAV, txt: '支持党史学习预约' }
+      { icon: ICON_FAV, txt: '支持党史学习' },
+      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
-    [{ icon: ICON_FLOWER, txt: '支持云端敬献献花' }],
-    [{ icon: ICON_VIDEO, txt: '支持文字介绍' }]
+    [
+      { icon: ICON_FLOWER, txt: '支持云端敬献献花' },
+      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
+    ],
+    [{ icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }]
   ]
+
   createPage({
     data: {
       bannerUrl: '',
@@ -37,6 +42,7 @@
     onLoad() {
       this.getAdBannerData()
       this.getListData()
+      wx.setNavigationBarTitle({ title: '首页' })
     },
     pageLifetimes: {
       show() {
@@ -48,6 +54,9 @@
           })
         }
       }
+    },
+    onShareAppMessage() {
+      return { title: '红色崇凝', path: '/pages/open/index' }
     },
     methods: {
       // 获取首页Banner图片

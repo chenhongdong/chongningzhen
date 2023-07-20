@@ -9,21 +9,21 @@
     onLaunch() {
       this.refreshToken()
     },
+    onShareAppMessage() {
+      // const promise = new Promise(resolve => {
+      //   setTimeout(() => {
+      //     resolve({
+      //       title: '红色崇凝'
+      //     })
+      //   }, 2000)
+      // })
+      return {
+        title: '红色崇凝123',
+        path: '/pages/open/index'
+        // promise
+      }
+    },
     methods: {
-      onShareAppMessage() {
-        const promise = new Promise(resolve => {
-          setTimeout(() => {
-            resolve({
-              title: '红色崇凝学习预约'
-            })
-          }, 2000)
-        })
-        return {
-          title: '红色崇凝',
-          path: '/pages/open/index',
-          promise 
-        }
-      },
       refreshToken() {
         const token = wx.getStorageSync('token') || ''
         const refreshToken = wx.getStorageSync('refreshToken') || ''
@@ -55,6 +55,10 @@
 
 <style>
   /*此处编写全局样式*/
+  page {
+    height: 100%;
+    background-color: #c80808;
+  }
 </style>
 
 <script type="application/json">

@@ -34,7 +34,7 @@
           <view class="text">{{ intro }}</view>
         </view>
         <view class="btns">
-          <view class="btn btn_study" wx:for="{{btnList}}" wx:key="index" catchtap="handleClick(item.alias)">{{ item.text }}</view>
+          <view class="btn btn_study" wx:for="{{btnList}}" wx:key="index" catchtap="handleClick(item.linkType)">{{ item.text }}</view>
           <!-- <view class="btn btn_send" wx:for="{{btnList}}" catchtap="sendFlowers">{{ item.text }}</view>
           <view class="btn btn_study" catchtap="jumpStudy">学习预约</view> -->
         </view>
@@ -62,6 +62,9 @@
       const { id } = options
       this.getDetailData(id)
     },
+    onShareAppMessage() {
+      return { title: '红色崇凝', path: '/pages/open/index' }
+    },
     methods: {
       // 通过id获取详情页数据
       getDetailData(id) {
@@ -75,6 +78,8 @@
               this.name = name.split('·')[1] || name
               this.intro = intro
               this.btnList = btnList
+              // 设置导航栏标题
+              wx.setNavigationBarTitle({ title: this.name })
               // 如果有视频资源就加载视频，不再加载轮播图
               if (Object.keys(introVideo).length > 0) {
                 this.introVideo = introVideo?.file?.resUrl
@@ -87,10 +92,10 @@
           }
         })
       },
-      handleClick(alias) {
-        if (alias === 'xcx_btn_like') {
+      handleClick(linkType) {
+        if (linkType === 3) {
           this.sendFlowers()
-        } else if (alias === 'xcx_btn_booking') {
+        } else if (linkType === 1) {
           this.jumpStudy()
         }
       },
@@ -110,18 +115,20 @@
 <style lang="stylus" scoped>
   .detail_wrapper
     position relative
-    height 100vh
+    height 100%
     background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/b22fde7c9ab9418c41cc29da44aba47d6cf38a0c6c22aabfc0334b35b5dce8a7.jpg') no-repeat
     background-size 100% 100%
     overflow-y auto
     .box
       width calc(100% - 150rpx)
       height 100%
-      margin 0 auto
+      margin 50rpx auto
+      overflow-y auto
+      &::-webkit-scrollbar
+        display none
       .media
         width 600rpx
         height 350rpx
-        margin-top 50rpx
         overflow hidden
         .video-area, .slider
           width 100%
@@ -151,7 +158,7 @@
           background url('https://hongselvyou.lndx-study.beihero.com/file/png/ffaf9ee7e0513d69257a403b6ab8858493b8cb6a364160cb5cea73855132e7f8.png') no-repeat
           background-size contain
           box-sizing border-box
-          font-size 50rpx
+          font-size 44rpx
           font-weight 600
           color #fff
           letter-spacing 6rpx
@@ -160,7 +167,7 @@
           box-sizing border-box
           .brief
             font-weight 600
-            font-size 28rpx
+            font-size 32rpx
             color #f3db8f
             letter-spacing 3rpx
             &:after
@@ -180,30 +187,16 @@
           justify-content center
           padding 50rpx
           .btn
-            display flex
-            align-items center
-            justify-content center
             position relative
             width 500rpx
             height 84rpx
-            background url('https://hongselvyou.lndx-study.beihero.com/file/png/54b66cf59f1f4b418e310935f26b8d4a1d5457d18e6dc95431022a6b23190c55.png') no-repeat
+            line-height 80rpx
+            background url('https://hongselvyou.lndx-study.beihero.com/file/png/dfdbf7869c7c09d79ebee6b0a078359c7c38c9f0ce9804a5e12238d1053e9cc7.png') no-repeat
             background-size 100% 100%
             box-sizing border-box
+            text-align center
             font-size 36rpx
             color #fff
-            /*&:before
-              content ''
-              display inline-block
-              width 45rpx
-              height 34rpx
-            &.btn_send
-              &:before
-                background url('https://hongselvyou.lndx-study.beihero.com/file/png/88583fb465cc26b0876f52ff1d7df07d1a1d679739fb71a3013deb832b13f9d2.png') no-repeat
-                background-size contain
-            &.btn_study
-              &:before
-                background url('https://hongselvyou.lndx-study.beihero.com/file/png/6225ae7a3477b6ba44ddbaa2fa73df3ed25c9a670a5b1dc8eb6aa376e1c37069.png') no-repeat
-                background-size contain*/
 </style>
 
 <script type="application/json">

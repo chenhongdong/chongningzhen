@@ -6,7 +6,7 @@ export const GET_SCENIC_SPOT_FIND = BASE_URL + '/api/posts/home/scenic_spot/find
 export const GET_SCENIC_SPOT_FIND_LOAD = BASE_URL + '/api/posts/home/scenic_spot/findPagingLoadBtn'
 // 景点查询详情页传入对应id
 export const GET_SCENIC_SPOT_DETAIL = BASE_URL + '/api/posts/home/scenic_spot/find'
-// 查询通过id加载按钮     
+// 查询通过id加载按钮
 export const GET_SCENIC_SPOT_DETAIL_LOAD = BASE_URL + '/api/posts/home/scenic_spot/findLoadBtn'
 // 通过别名获取banner
 export const GET_AD_BANNER = BASE_URL + '/api/meta/home/banner/advertising/findByAliasLoadSubList'

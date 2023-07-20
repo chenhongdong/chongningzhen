@@ -6,6 +6,7 @@
     />
     <view class="name">预约成功</view>
     <view class="tip">如有特殊情况，请提前1天取消预约</view>
+    <view class="btn" catchtap="jumpProfile">查看预约</view>
   </view>
 </template>
 
@@ -14,7 +15,11 @@
 
   createComponent({
     data: {},
-    methods: {}
+    methods: {
+      jumpProfile() {
+        wx.switchTab({ url: '/pages/profile/index' })
+      }
+    }
   })
 </script>
 
@@ -23,7 +28,10 @@
     display flex
     flex-direction column
     align-items center
+    height 100%
     padding-top 100rpx
+    background-color #fff
+    box-sizing border-box
     .img
       width 630rpx
       height 600rpx
@@ -35,6 +43,16 @@
       padding-top 36rpx
       font-size 30rpx
       color #959595
+    .btn
+      width 400rpx
+      height 86rpx
+      line-height 80rpx
+      margin 50rpx auto 0
+      background url('https://hongselvyou.lndx-study.beihero.com/file/png/dfdbf7869c7c09d79ebee6b0a078359c7c38c9f0ce9804a5e12238d1053e9cc7.png') no-repeat
+      background-size 100% 100%
+      text-align center
+      font-size 36rpx
+      color #fff
 </style>
 
 <script type="application/json">

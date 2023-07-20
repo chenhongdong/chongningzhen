@@ -4,7 +4,16 @@
       <view class="item" wx:for="{{listData}}" wx:key="index">
         <view class="info">
           <view class="time">{{ item.time }}</view>
-          <view class="name">村史馆、老爷庙、书院—课程学习</view>
+          <text class="txt">预约成功</text>
+          <view
+            class="name"
+            wx:for="{{item.scenicSpotList}}"
+            wx:for-item="child"
+            wx:for-index="cindex"
+            wx:key="cindex"
+          >
+            {{ cindex + 1 }} {{ child.name }} {{ item.visitorCount }}人 {{ item.contactName }}
+          </view>
         </view>
         <view class="operator" catchtap="cancelStudy(item.id)">
           <view class="icon"></view>
@@ -50,21 +59,31 @@
         display flex
         justify-content space-between
         width 670rpx
-        height 100rpx
-        margin-top 30rpx
+        padding 20rpx 28rpx
+        margin-top 20rpx
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/bd24bd7b17c719060fbc50a0fec5de20ca94cfad35aaf82457e8185602a27317.png') no-repeat
         background-size 100% 100%
+        box-sizing border-box
         .info
-          padding-top 14rpx
-          padding-left 28rpx
+          position relative
+          width calc(100% - 115rpx)
           .time
-            font-size 24rpx
+            font-size 32rpx
+            color #a6a6a6
+          .txt
+            position absolute
+            right 0
+            top 4rpx
+            font-size 26rpx
             color #a6a6a6
           .name
-            font-size 28rpx
+            padding-bottom 10rpx
+            padding-top 16rpx
+            margin-left 20rpx
+            border-bottom 1rpx solid #ccc
+            font-size 26rpx
             color #4b4747
         .operator
-          padding-right 20rpx
           display flex
           align-items center
           .icon
@@ -75,7 +94,7 @@
           .cancel
             width 40rpx
             height 40rpx
-            margin-top -14rpx
+            margin-top -12rpx
             margin-left 10rpx
             font-size 20rpx
             color #727071

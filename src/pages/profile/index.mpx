@@ -5,9 +5,7 @@
         <view class="avatar">
           <image src="{{userInfo.avatarUrl}}" class="img" />
         </view>
-        <view class="nickname">{{
-          userInfo.nick.length > 0 ? userInfo.nick : '请登录'
-        }}</view>
+        <view class="nickname">{{ userInfo.nick.length > 0 ? userInfo.nick : '请登录' }}</view>
       </view>
     </view>
     <userInfo />
@@ -30,7 +28,7 @@
   import DEF_AVATAR from '@/assets/images/avatar_def.png'
   import ApiConfig from '@/api/config'
 
-  const defUserInfo = { avatar: DEF_AVATAR, nick: '' }
+  const defUserInfo = { avatarUrl: DEF_AVATAR, nick: '' }
   // 给月份和日期进行补0
   const addZero = (n) => (n < 9 ? '0' + n : '' + n)
 
@@ -40,7 +38,8 @@
       listData: []
     },
     onLoad() {
-      this.refresh()
+      // this.refresh()
+      wx.setNavigationBarTitle({ title: '我的' })
     },
     pageLifetimes: {
       show() {
@@ -55,6 +54,9 @@
           })
         }
       }
+    },
+    onShareAppMessage() {
+      return { title: '红色崇凝', path: '/pages/open/index' }
     },
     methods: {
       getUserProfile() {
@@ -126,9 +128,18 @@
                 const month = addZero(d.getMonth() + 1)
                 const day = addZero(d.getDate())
                 const time = year + '-' + month + '-' + day
-                return { id: item.id, time, }
+                return {
+                  id: item.id,
+                  time,
+                  appointDate: item.appointDate,
+                  scenicSpotList: item.scenicSpotList,
+                  contactName: item.contactName,
+                  visitorCount: item.visitorCount
+                }
               })
               this.listData = validInfo
+              // 对预约列表数据进行升序排列
+              this.listData.sort((a, b) => b.appointDate - a.appointDate)
             }
           }
         })
@@ -206,7 +217,7 @@
     .my_list
       height calc(100% - 498rpx)
       padding 30rpx 40rpx
-      overflow auto
+      overflow-y auto
       .title
         font-size 30rpx
         font-weight 600

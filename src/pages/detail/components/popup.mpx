@@ -59,26 +59,26 @@
       .l
         position absolute
         top 70rpx
-        left 10rpx
-        width 294rpx
-        height 325rpx
+        left -40rpx
+        width 344rpx
+        height 375rpx
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/3d0f2cba58fe50f33fca217c34d3f023fd80fa9e2cafd6e44e0ebd4c1dc1ff18.png') no-repeat
         background-size contain
         z-index 2
       .m
         position absolute
         left 50%
-        width 200rpx
-        height 300rpx
+        width 250rpx
+        height 350rpx
         transform translateX(-50%)
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/c38d149222b066328e6bc6a6bbf8b008481986d085d9ff720c54d6f147db3587.png') no-repeat
         background-size contain
       .r
         position absolute
         top 70rpx
-        right 10rpx
-        width 294rpx
-        height 325rpx
+        right -40rpx
+        width 344rpx
+        height 375rpx
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/e23b33c661b6dc7f6f120538912402a946cc36218948eed5a886f6fa408575c4.png') no-repeat
         background-size contain
         z-index 2
@@ -86,8 +86,8 @@
         position absolute
         top 238rpx
         left 50%
-        width 308rpx
-        height 109rpx
+        width 358rpx
+        height 159rpx
         transform translateX(-50%)
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/33251a068f87984d1d5c4b1748d8aa3f14b625fec10827bd0c339290f00f3e8d.png') no-repeat
         background-size contain
@@ -95,9 +95,9 @@
       .close
         position absolute
         left 50%
-        bottom 12rpx
-        width 50rpx
-        height 50rpx
+        bottom -38rpx
+        width 100rpx
+        height 100rpx
         transform translateX(-50%)
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/f2abcfeb4ae2be090f95ad0ee005cde5676f4abbd3c39892c139d94746409155.png') no-repeat
         background-size contain
