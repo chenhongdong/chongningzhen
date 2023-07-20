@@ -3,7 +3,7 @@
     <view class="top_bar">
       <view class="info" catchtap="getUserProfile">
         <view class="avatar">
-          <image src="{{userInfo.avatar}}" class="img" />
+          <image src="{{userInfo.avatarUrl}}" class="img" />
         </view>
         <view class="nickname">{{
           userInfo.nick.length > 0 ? userInfo.nick : '请登录'
@@ -62,8 +62,8 @@
         wx.getUserProfile({
           desc: '用于完善资料',
           success: (res) => {
-            const { avatarUrl: avatar, nickName: nick } = res.userInfo
-            this.userInfo = { nick, avatar }
+            const { avatarUrl, nickName: nick } = res.userInfo
+            this.userInfo = { nick, avatarUrl }
           }
         })
       },
@@ -76,6 +76,7 @@
             (wx.getStorageSync('userInfo') && JSON.parse(wx.getStorageSync('userInfo'))) ||
             defUserInfo
           this.userInfo = info
+          console.log('我的天', this.userInfo, info)
         } else {
           this.listData = []
         }
@@ -117,6 +118,7 @@
           header: { token },
           success: (res) => {
             const { status, data } = res.data
+            console.log(data)
             if (status === 'ok') {
               const validInfo = data?.content.map((item) => {
                 const d = new Date(item.appointDate)
@@ -124,7 +126,7 @@
                 const month = addZero(d.getMonth() + 1)
                 const day = addZero(d.getDate())
                 const time = year + '-' + month + '-' + day
-                return { id: item.id, time }
+                return { id: item.id, time, }
               })
               this.listData = validInfo
             }

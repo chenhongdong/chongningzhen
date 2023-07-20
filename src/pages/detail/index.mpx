@@ -34,8 +34,9 @@
           <view class="text">{{ intro }}</view>
         </view>
         <view class="btns">
-          <view class="btn btn_send" catchtap="sendFlowers">敬献鲜花</view>
-          <view class="btn btn_study" catchtap="jumpStudy">学习预约</view>
+          <view class="btn btn_study" wx:for="{{btnList}}" wx:key="index" catchtap="handleClick(item.alias)">{{ item.text }}</view>
+          <!-- <view class="btn btn_send" wx:for="{{btnList}}" catchtap="sendFlowers">{{ item.text }}</view>
+          <view class="btn btn_study" catchtap="jumpStudy">学习预约</view> -->
         </view>
       </view>
     </view>
@@ -45,7 +46,7 @@
 
 <script>
   import { createPage } from '@mpxjs/core'
-  import ApiConfig, { BASE_URL } from '@/api/config'
+  import ApiConfig from '@/api/config'
 
   createPage({
     data: {
@@ -53,6 +54,7 @@
       intro: '',
       introVideo: {},
       photoList: [],
+      btnList: [],
       isPopup: false,
       isVideo: false
     },
@@ -60,30 +62,37 @@
       const { id } = options
       this.getDetailData(id)
     },
-    onUnload() {},
     methods: {
       // 通过id获取详情页数据
       getDetailData(id) {
         wx.request({
-          url: ApiConfig.GET_SCENIC_SPOT_DETAIL,
+          url: ApiConfig.GET_SCENIC_SPOT_DETAIL_LOAD,
           data: { postsId: id },
           success: (res) => {
             const { status, data } = res.data
             if (status === 'ok') {
-              const { name, intro, introVideo = {}, photoList = [] } = data
-              this.name = name.split('·')[1]
+              const { name, intro, introVideo = {}, photoList = [], btnList = [] } = data
+              this.name = name.split('·')[1] || name
               this.intro = intro
+              this.btnList = btnList
               // 如果有视频资源就加载视频，不再加载轮播图
               if (Object.keys(introVideo).length > 0) {
-                this.introVideo = BASE_URL + introVideo?.file?.resUrl
+                this.introVideo = introVideo?.file?.resUrl
                 this.isVideo = true
                 return
               }
-              this.photoList = photoList.map((item) => BASE_URL + item?.file?.resUrl)
+              this.photoList = photoList.map((item) => item?.file?.resUrl)
               console.log(this.photoList)
             }
           }
         })
+      },
+      handleClick(alias) {
+        if (alias === 'xcx_btn_like') {
+          this.sendFlowers()
+        } else if (alias === 'xcx_btn_booking') {
+          this.jumpStudy()
+        }
       },
       sendFlowers() {
         this.isPopup = true
@@ -104,11 +113,11 @@
     height 100vh
     background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/b22fde7c9ab9418c41cc29da44aba47d6cf38a0c6c22aabfc0334b35b5dce8a7.jpg') no-repeat
     background-size 100% 100%
+    overflow-y auto
     .box
       width calc(100% - 150rpx)
       height 100%
       margin 0 auto
-      overflow hidden
       .media
         width 600rpx
         height 350rpx
@@ -123,16 +132,13 @@
             height 100%
             background-color #000
         .slider
-          .slider-swiper
+          .swiper-item
             width 100%
             height 100%
             overflow hidden
-            .swiper-item
+            .img
               width 100%
               height 100%
-              .img
-                width 100%
-                height 100%
       .content
         position relative
         top -26rpx
@@ -171,27 +177,25 @@
             color #fff
         .btns
           display flex
-          justify-content space-between
+          justify-content center
           padding 50rpx
           .btn
             display flex
             align-items center
+            justify-content center
             position relative
-            width 230rpx
-            height 64rpx
-            line-height 60rpx
-            padding 0 35rpx
+            width 500rpx
+            height 84rpx
             background url('https://hongselvyou.lndx-study.beihero.com/file/png/54b66cf59f1f4b418e310935f26b8d4a1d5457d18e6dc95431022a6b23190c55.png') no-repeat
             background-size 100% 100%
             box-sizing border-box
-            text-align right
-            font-size 28rpx
+            font-size 36rpx
             color #fff
-            &:before
+            /*&:before
               content ''
               display inline-block
               width 45rpx
-              height 36rpx
+              height 34rpx
             &.btn_send
               &:before
                 background url('https://hongselvyou.lndx-study.beihero.com/file/png/88583fb465cc26b0876f52ff1d7df07d1a1d679739fb71a3013deb832b13f9d2.png') no-repeat
@@ -199,7 +203,7 @@
             &.btn_study
               &:before
                 background url('https://hongselvyou.lndx-study.beihero.com/file/png/6225ae7a3477b6ba44ddbaa2fa73df3ed25c9a670a5b1dc8eb6aa376e1c37069.png') no-repeat
-                background-size contain
+                background-size contain*/
 </style>
 
 <script type="application/json">

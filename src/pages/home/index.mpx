@@ -7,7 +7,7 @@
 
 <script>
   import { createPage } from '@mpxjs/core'
-  import ApiConfig, { BASE_URL } from '@/api/config'
+  import ApiConfig from '@/api/config'
   import ICON_VIDEO from '@/assets/images/icon_video.png'
   import ICON_FAV from '@/assets/images/icon_fav.png'
   import ICON_FLOWER from '@/assets/images/icon_flower.png'
@@ -58,7 +58,7 @@
           success: (res) => {
             const { status, data } = res.data
             if (status === 'ok') {
-              this.bannerUrl = BASE_URL + data.coverUrl
+              this.bannerUrl = data.coverUrl
             }
           }
         })
@@ -67,7 +67,7 @@
       getListData() {
         // 请求景点列表数据
         wx.request({
-          url: ApiConfig.GET_SCENIC_SPOT_FIND,
+          url: ApiConfig.GET_SCENIC_SPOT_FIND_LOAD,
           data: { page: 1 },
           success: (res) => {
             const { status, data } = res.data

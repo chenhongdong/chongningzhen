@@ -10,6 +10,20 @@
       this.refreshToken()
     },
     methods: {
+      onShareAppMessage() {
+        const promise = new Promise(resolve => {
+          setTimeout(() => {
+            resolve({
+              title: '红色崇凝学习预约'
+            })
+          }, 2000)
+        })
+        return {
+          title: '红色崇凝',
+          path: '/pages/open/index',
+          promise 
+        }
+      },
       refreshToken() {
         const token = wx.getStorageSync('token') || ''
         const refreshToken = wx.getStorageSync('refreshToken') || ''
@@ -71,7 +85,7 @@
     "lazyCodeLoading": "requiredComponents",
     "window": {
       "navigationBarBackgroundColor": "#c80808",
-      "navigationBarTitleText": "红色美丽村庄崇凝"
+      "navigationBarTitleText": "红色崇凝"
     }
   }
 </script>

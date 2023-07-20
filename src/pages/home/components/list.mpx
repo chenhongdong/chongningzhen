@@ -23,7 +23,6 @@
 
 <script>
   import { createComponent } from '@mpxjs/core'
-  import { BASE_URL } from '@/api/config'
 
   createComponent({
     properties: {
@@ -37,17 +36,17 @@
     },
     lifetimes: {
       attached() {
-        const listData = this.handleListData(this.list)
-        this.listData = listData
+        // const listData = this.handleListData(this.list)
+        this.listData = this.list
       }
     },
     methods: {
-      handleListData(data = []) {
-        return data.map((item) => {
-          item.coverUrl = BASE_URL + item.coverUrl
-          return item
-        })
-      },
+      // handleListData(data = []) {
+      //   return data.map((item) => {
+      //     item.coverUrl = item.coverUrl
+      //     return item
+      //   })
+      // },
       // 跳到学习预约页
       jumpStudy() {
         wx.navigateTo({ url: `/pages/study/index` })
