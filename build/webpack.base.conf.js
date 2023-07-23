@@ -15,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       { // 添加mp4视频文件的识别
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|eot|ttf|woff|otf)$/,
         use: 'file-loader'
       }
     ]

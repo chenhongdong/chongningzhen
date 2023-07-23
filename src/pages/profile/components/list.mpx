@@ -12,7 +12,8 @@
             wx:for-index="cindex"
             wx:key="cindex"
           >
-            {{ cindex + 1 }} {{ child.name }} {{ item.visitorCount }}人 {{ item.contactName }}
+            <text class="left">0{{ cindex + 1 }}《{{ child.courseName }}》</text>
+            <text class="right">{{ child.name }}</text>
           </view>
         </view>
         <view class="operator" catchtap="cancelStudy(item.id)">
@@ -73,13 +74,16 @@
           .txt
             position absolute
             right 0
-            top 4rpx
-            font-size 26rpx
-            color #a6a6a6
+            top 0
+            font-size 28rpx
+            font-weight 600
+            color #e64340
           .name
+            display flex
+            justify-content space-between
+            align-items center
             padding-bottom 10rpx
             padding-top 16rpx
-            margin-left 20rpx
             border-bottom 1rpx solid #ccc
             font-size 26rpx
             color #4b4747

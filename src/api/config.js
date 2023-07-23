@@ -24,6 +24,8 @@ export const ADD_STUDY_USER = BASE_URL + '/api/posts/home/user_booking/addByCurr
 export const DEL_STUDY_USER = BASE_URL + '/api/posts/home/user_booking/deleteByCurrentUser'
 // 刷新令牌
 export const REFRESH_TOKEN = BASE_URL + '/api/user/home/wxAuth/refreshToken'
+// 献花接口
+export const SEND_FLOWER = BASE_URL + '/api/posts/home/scenic_spot/increaseFlowerCount'
 
 export default {
     GET_SCENIC_SPOT_FIND,
@@ -37,5 +39,6 @@ export default {
     GET_MY_STUDY,
     ADD_STUDY_USER,
     DEL_STUDY_USER,
-    REFRESH_TOKEN
+    REFRESH_TOKEN,
+    SEND_FLOWER
 }

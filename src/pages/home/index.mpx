@@ -8,22 +8,21 @@
 <script>
   import { createPage } from '@mpxjs/core'
   import ApiConfig from '@/api/config'
-  import ICON_VIDEO from '@/assets/images/icon_video.png'
-  import ICON_FAV from '@/assets/images/icon_fav.png'
+  import ICON_STUDY from '@/assets/images/icon_study.png'
   import ICON_FLOWER from '@/assets/images/icon_flower.png'
   import ICON_POS from '@/assets/images/icon_pos.png'
   // 支持
   const supports = [
     [
-      { icon: ICON_VIDEO, txt: '支持视频介绍' },
-      { icon: ICON_FAV, txt: '支持党史学习' }
-    ],
-    [
-      { icon: ICON_FAV, txt: '支持党史学习' },
+      { icon: ICON_STUDY, txt: '支持党史学习' },
       { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
     [
-      { icon: ICON_FAV, txt: '支持党史学习' },
+      { icon: ICON_STUDY, txt: '支持党史学习' },
+      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
+    ],
+    [
+      { icon: ICON_STUDY, txt: '支持党史学习' },
       { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
     [
@@ -42,7 +41,6 @@
     onLoad() {
       this.getAdBannerData()
       this.getListData()
-      wx.setNavigationBarTitle({ title: '首页' })
     },
     pageLifetimes: {
       show() {
@@ -100,10 +98,13 @@
   .home_wrapper
     position relative
     width 100%
-    height 110vh
+    height 100%
     background url('https://hongselvyou.lndx-study.beihero.com/file/png/8487e88c2b254cd0e9d5f684c08ca507358fec0f13ede0ba26a79514c363da33.png') no-repeat
     background-size 100% 100%
     overflow-x hidden
+    overflow-y auto
+    &::-webkit-scrollbar
+      display none
 </style>
 
 <script type="application/json">

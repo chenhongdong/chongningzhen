@@ -44,16 +44,14 @@
     },
     lifetimes: {
       attached() {
-        // const listData = this.handleListData(this.list)
         this.listData = this.list
-        console.log(this.listData)
       }
     },
     methods: {
       jumpPage(btn, id) {
         if (btn.linkType === 1) {
           this.jumpStudy()
-        } else if (btn.linkType === 2) {
+        } else if (btn.linkType === 2 || btn.linkType === 3) {
           this.jumpDetail(id)
         }
       },
@@ -76,7 +74,7 @@
     top 70rpx
     width 750rpx
     height 1600rpx
-    background url('https://hongselvyou.lndx-study.beihero.com/file/png/8dfa4d46e4414fbf5d3e26ae90ffa3143a746bba97553d49364f478d96c85809.png') no-repeat
+    background url('https://hongselvyou.lndx-study.beihero.com/file/png/f1bfdf269d0674e8130f20fff3237149c8c1d5d60384051051e2321e20b2f09b.png') no-repeat
     background-size 100% 100%
     .item
       display flex
@@ -102,6 +100,7 @@
         justify-content space-evenly
         margin-left 30rpx
         .title
+          margin-top -12rpx
           color #000
           font-size 32rpx
           font-weight 600
@@ -112,21 +111,21 @@
             align-items center
             padding-top 10rpx
             .icon
-              width 28rpx
-              height 28rpx
+              width 24rpx
+              height 24rpx
             .txt
               padding-left 10rpx
-              color #000
-              font-size 26rpx
+              color #777
+              font-size 22rpx
         .btns
           display flex
           padding-top 24rpx
           .btn
             display flex
             justify-content center
-            align-items center
             width 135rpx
             height 50rpx
+            line-height 50rpx
             background url('https://hongselvyou.lndx-study.beihero.com/file/png/dfbf6ebf081f0daaf0f8cebfac4ad50d667d219a6fe604ec9e1c3ac67b4df495.png') no-repeat
             background-size contain
             color #fff

@@ -34,13 +34,17 @@
           <view class="text">{{ intro }}</view>
         </view>
         <view class="btns">
-          <view class="btn btn_study" wx:for="{{btnList}}" wx:key="index" catchtap="handleClick(item.linkType)">{{ item.text }}</view>
-          <!-- <view class="btn btn_send" wx:for="{{btnList}}" catchtap="sendFlowers">{{ item.text }}</view>
-          <view class="btn btn_study" catchtap="jumpStudy">学习预约</view> -->
+          <view
+            class="btn btn_study"
+            wx:for="{{btnList}}"
+            wx:key="index"
+            catchtap="handleClick(item.linkType)"
+            >{{ item.text }}</view
+          >
         </view>
       </view>
     </view>
-    <popup wx:if="{{isPopup}}" bind:close="closePopup" />
+    <popup wx:if="{{isPopup}}" bind:close="closePopup" count="{{flowerCount}}" />
   </view>
 </template>
 
@@ -56,23 +60,59 @@
       photoList: [],
       btnList: [],
       isPopup: false,
-      isVideo: false
+      isVideo: false,
+      flowerCount: 0,
+      postsId: ''
     },
     onLoad(options) {
       const { id } = options
+      this.postsId = id
       this.getDetailData(id)
+      console.log(this.postsId, typeof this.postsId)
     },
     onShareAppMessage() {
       return { title: '红色崇凝', path: '/pages/open/index' }
     },
     methods: {
+      loginMp() {
+        wx.login({
+          success: (res) => {
+            if (res.code) {
+              wx.request({
+                url: ApiConfig.OPENID_VERIFY,
+                method: 'POST',
+                data: { code: res.code },
+                success: (val) => {
+                  const { status, data, exception } = val.data
+                  if (status === 'ok') {
+                    const { userToken, userInfo } = data
+                    try {
+                      // token等信息存入Storage中方便获取
+                      wx.setStorageSync('token', userToken.token)
+                      wx.setStorageSync('refreshToken', userToken.refreshToken)
+                      wx.setStorageSync('userInfo', JSON.stringify(userInfo))
+                      wx.showToast({ title: '登录成功' })
+                    } catch (e) {
+                      console.err(e)
+                    }
+                  } else {
+                    wx.showToast({ title: exception?.message, icon: 'none' })
+                  }
+                }
+              })
+            } else {
+              console.log('登录失败！' + res.errMsg)
+            }
+          }
+        })
+      },
       // 通过id获取详情页数据
       getDetailData(id) {
         wx.request({
           url: ApiConfig.GET_SCENIC_SPOT_DETAIL_LOAD,
           data: { postsId: id },
           success: (res) => {
-            const { status, data } = res.data
+            const { status, data, exception } = res.data
             if (status === 'ok') {
               const { name, intro, introVideo = {}, photoList = [], btnList = [] } = data
               this.name = name.split('·')[1] || name
@@ -87,7 +127,8 @@
                 return
               }
               this.photoList = photoList.map((item) => item?.file?.resUrl)
-              console.log(this.photoList)
+            } else {
+              wx.showToast({ title: exception?.message, icon: 'none' })
             }
           }
         })
@@ -99,8 +140,30 @@
           this.jumpStudy()
         }
       },
-      sendFlowers() {
+      sendFlowers(postsId) {
         this.isPopup = true
+        setTimeout(() => {
+          wx.showToast({ title: '献花成功 +1', icon: 'none', duration: 2000 })
+        }, 1500)
+        const token = wx.getStorageSync('token') || ''
+        if (!token) {
+          this.loginMp()
+          return
+        }
+        wx.request({
+          url: `${ApiConfig.SEND_FLOWER}?postsId=${this.postsId}&increaseCount=1`,
+          method: 'POST',
+          header: { token },
+          success: (res) => {
+            const { status, data, exception } = res.data
+            if (status === 'ok') {
+              console.log('献花成功', data)
+              this.flowerCount = data
+            } else {
+              wx.showToast({ title: exception?.message, icon: 'none' })
+            }
+          }
+        })
       },
       closePopup() {
         this.isPopup = false
@@ -116,19 +179,19 @@
   .detail_wrapper
     position relative
     height 100%
-    background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/b22fde7c9ab9418c41cc29da44aba47d6cf38a0c6c22aabfc0334b35b5dce8a7.jpg') no-repeat
+    background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/fe1099ccdc281708bceb3e17bfa1d0115f3abccd641c708db0db11b9d8b232ae.jpg') no-repeat
     background-size 100% 100%
     overflow-y auto
     .box
-      width calc(100% - 150rpx)
+      width calc(100% - 82rpx)
       height 100%
       margin 50rpx auto
       overflow-y auto
       &::-webkit-scrollbar
         display none
       .media
-        width 600rpx
-        height 350rpx
+        width 100%
+        height 380rpx
         overflow hidden
         .video-area, .slider
           width 100%
@@ -167,7 +230,7 @@
           box-sizing border-box
           .brief
             font-weight 600
-            font-size 32rpx
+            font-size 34rpx
             color #f3db8f
             letter-spacing 3rpx
             &:after
@@ -180,7 +243,7 @@
           .text
             padding-top 22rpx
             line-height 44rpx
-            font-size 28rpx
+            font-size 30rpx
             color #fff
         .btns
           display flex

@@ -37,10 +37,7 @@
       userInfo: defUserInfo,
       listData: []
     },
-    onLoad() {
-      // this.refresh()
-      wx.setNavigationBarTitle({ title: '我的' })
-    },
+    onLoad() {},
     pageLifetimes: {
       show() {
         // 刷新列表数据
@@ -197,8 +194,8 @@
         align-items center
         height 100%
         .avatar
-          width 80rpx
-          height 80rpx
+          width 110rpx
+          height 110rpx
           margin-left 40rpx
           border-radius 50%
           overflow hidden

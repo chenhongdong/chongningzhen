@@ -27,8 +27,13 @@
             wx:key="index"
             catchtap="selectCourse(item, index)"
           >
-            <view class="name">{{ item.txt }}</view>
-            <view class="icon {{item.selected ? 'ok' : ''}}"></view>
+            <view class="course_info">
+              <view class="name">0{{ index + 1 }}《{{ item.courseName }}》</view>
+              <view class="other">
+                讲师: {{ item.courseTeacher }}  时长: {{ item.courseDurationM }}分钟  地点: {{ item.name }}
+              </view>
+            </view>
+            <view class="icon {{item.selected ? 'ok' : item.bookingFull ? 'no' : ''}}"></view>
           </view>
         </view>
       </view>
@@ -66,6 +71,8 @@
   // 给月份和日期进行补0
   const addZero = (n) => (n < 9 ? '0' + n : '' + n)
 
+  const dayMap = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五' }
+
   createPage({
     data: {
       selectDate: [],
@@ -82,6 +89,7 @@
     },
     onLoad() {
       this.getCourseData()
+      wx.setNavigationBarTitle({ title: '预约学习' })
     },
     onShareAppMessage() {
       return { title: '红色崇凝', path: '/pages/open/index' }
@@ -232,6 +240,9 @@
         const { scenicSpotList, selectCourseArr, current, isForbid } = this
         // 闭馆、已约满的状态禁止选择课程
         if (isForbid) return
+        console.log('选择课程为： ', course)
+        // 如果该课程已约满就直接返回
+        if (course.bookingFull) return
 
         if (!course.selected) {
           selectCourseArr[idx] = course.id
@@ -252,8 +263,9 @@
             if (status === 'ok') {
               data.content.forEach((item, idx) => {
                 const d = new Date(item.appointDate)
+                const day = `周${dayMap[d.getDay()]}`
                 // 将日期格式化后存入可选日期数组中
-                const time = `${addZero(d.getMonth() + 1)}/${addZero(d.getDate())}`
+                const time = `${addZero(d.getMonth() + 1)}/${addZero(d.getDate())} ${day}`
                 this.selectDate.push({
                   time,
                   isClosing: item.isClosing,
@@ -263,7 +275,10 @@
                 })
                 // 将课程放入景点数组中方便遍历
                 const scenicSpotName = item.scenicSpotList.map((item, idx) => ({
-                  txt: `${item.name} ${item.courseName} ${item.courseDurationM}min ${item.courseTeacher}`,
+                  name: item.name,
+                  courseName: item.courseName,
+                  courseDurationM: item.courseDurationM,
+                  courseTeacher: item.courseTeacher,
                   id: item.id,
                   selected: false,
                   isClosing: item.isClosing,
@@ -284,7 +299,7 @@
 <style lang="stylus" scoped>
   .study
     height 100vh
-    padding-bottom 200rpx
+    padding-bottom 360rpx
     background-color #f2f3f5
     .title_bar
       width 100%
@@ -328,16 +343,24 @@
             padding-top 30rpx
             &:first-child
               padding 0
+            .course_info
+              .name
+                font-size 26rpx
+                font-weight 600
+                color #4b4747
+              .other
+                padding-top 10rpx
+                font-size 24rpx
+                color: #666;
             .icon
-              width 30rpx
-              height 30rpx
-              background url('https://hongselvyou.lndx-study.beihero.com/file/png/24b2110a0451e4bd6d8a00b2b8fef849d74c1316ee333ce24c885d6e882db73c.png') no-repeat
+              width 44rpx
+              height 44rpx
+              background url('https://hongselvyou.lndx-study.beihero.com/file/png/7986387b61801103d39a502d236b619a0fb7d7b95453e34c83bc2a4b427a0bca.png') no-repeat
               background-size 100% 100%
               &.ok
-                background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/c1e3e8c8c8d5afb4f82ba54d59f7c869ab13d8156583e7dcc5ede7ac5351ee2c.png')
-            .name
-              font-size 26rpx
-              color #4b4747
+                background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/4c534fd73e8ad7726e4b9f99ef87c84b46423ad95567d98d12e113a59da2e99c.png')
+              &.no
+                background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/5542a7bb5ec5d2cf1d86fc6469965f3dfee2eb72c254c59f616d3fa712255c81.png')
         &.date
           .content
             display flex
@@ -346,10 +369,10 @@
             .item
               flex-direction column
               justify-content center
-              width 130rpx
+              width 144rpx
               height 90rpx
               padding-top 0
-              margin-right 30rpx
+              margin-right 10rpx
               margin-bottom 30rpx
               border 2rpx solid #00b42a
               border-radius 12rpx
@@ -371,10 +394,10 @@
                 border-color #c6c6c6
                 background-color #ebecef
               .time
-                font-size 28rpx
+                font-size 24rpx
                 color #4b4747
               .status
-                font-size 26rpx
+                font-size 22rpx
                 color #4b4747
         &.info
           .content

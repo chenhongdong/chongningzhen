@@ -7,6 +7,17 @@
       <view class="txt"></view>
       <view class="close" catchtap="closePopup"></view>
     </view>
+    <!-- <view class="count">
+      <image
+        class="font_img_first"
+        src="https://hongselvyou.lndx-study.beihero.com/file/png/741c60528731e3d876a1e1c5ce1c2884330d8c847aecf776a4cd11f5e477fdfd.png"
+      />
+      {{ count }}
+      <image
+        class="font_img_last"
+        src="https://hongselvyou.lndx-study.beihero.com/file/png/9a17632a88c5a2401b5e42d775025c6120b0e9454599959b289f1665c647ac15.png"
+      />
+    </view> -->
   </view>
 </template>
 
@@ -14,6 +25,9 @@
   import { createComponent } from '@mpxjs/core'
 
   createComponent({
+    properties: {
+      count: Number
+    },
     data: {},
     lifetimes: {
       attached() {
@@ -102,6 +116,24 @@
         background url('https://hongselvyou.lndx-study.beihero.com/file/png/f2abcfeb4ae2be090f95ad0ee005cde5676f4abbd3c39892c139d94746409155.png') no-repeat
         background-size contain
         z-index 3
+    .count
+      display flex
+      align-items center
+      left 50%
+      top 23%
+      position absolute
+      transform translate(-50%, -50%)
+      font-family 'PingFangSC-Semibold'
+      font-size 50rpx
+      font-weight 600
+      color #615e5f
+      text-shadow 1px 1px 0px #fff, -1px -1px 0px #fff, 1px -1px 0px #fff, -1px 1px 0px #fff
+      .font_img_first
+        width 60rpx
+        height 60rpx
+      .font_img_last
+        width 138rpx
+        height 60rpx
 </style>
 
 <script type="application/json">
