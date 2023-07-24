@@ -27,13 +27,11 @@
             wx:key="index"
             catchtap="selectCourse(item, index)"
           >
-            <view class="course_info">
+            <view class="course_info {{item.bookingFull ? 'no' : ''}}">
               <view class="name">0{{ index + 1 }}《{{ item.courseName }}》</view>
-              <view class="other">
-                讲师: {{ item.courseTeacher }}  时长: {{ item.courseDurationM }}分钟  地点: {{ item.name }}
-              </view>
+              <view class="other">讲师:{{ item.courseTeacher }}  时长:{{ item.courseDurationM }}分钟  地点:{{ item.name }}</view>
             </view>
-            <view class="icon {{item.selected ? 'ok' : item.bookingFull ? 'no' : ''}}"></view>
+            <view class="icon {{item.selected ? 'ok' : ''}}"></view>
           </view>
         </view>
       </view>
@@ -344,6 +342,9 @@
             &:first-child
               padding 0
             .course_info
+              &.no
+                .name, .other
+                  color #bbb
               .name
                 font-size 26rpx
                 font-weight 600
