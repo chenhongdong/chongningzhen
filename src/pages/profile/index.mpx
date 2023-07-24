@@ -1,7 +1,7 @@
 <template>
   <view class="profile">
     <view class="top_bar">
-      <view class="info" catchtap="getUserProfile">
+      <view class="info" catchtap="loginMp">
         <view class="avatar">
           <image src="{{userInfo.avatarUrl}}" class="img" />
         </view>
@@ -75,7 +75,6 @@
             (wx.getStorageSync('userInfo') && JSON.parse(wx.getStorageSync('userInfo'))) ||
             defUserInfo
           this.userInfo = info
-          console.log('我的天', this.userInfo, info)
         } else {
           this.listData = []
         }

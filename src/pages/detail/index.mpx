@@ -144,7 +144,7 @@
         this.isPopup = true
         setTimeout(() => {
           wx.showToast({ title: '献花成功 +1', icon: 'none', duration: 2000 })
-        }, 1500)
+        }, 1200)
         const token = wx.getStorageSync('token') || ''
         if (!token) {
           this.loginMp()
@@ -157,7 +157,6 @@
           success: (res) => {
             const { status, data, exception } = res.data
             if (status === 'ok') {
-              console.log('献花成功', data)
               this.flowerCount = data
             } else {
               wx.showToast({ title: exception?.message, icon: 'none' })
