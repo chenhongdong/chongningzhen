@@ -21,8 +21,6 @@
             wx:key="bidx"
             catchtap="jumpPage(btn, item.id)"
           >{{ btn.text }}</view>
-          <!-- <view class="btn btn_look">查看详情</view>
-          <view class="btn btn_study" catchtap="jumpStudy">学习预约</view> -->
         </view>
       </view>
     </view>
@@ -81,7 +79,7 @@
       padding 0 36rpx
       margin-top 30rpx
       &:first-child
-        margin-top 180rpx
+        margin-top 218rpx
       .pic
         display flex
         justify-content center

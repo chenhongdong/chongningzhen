@@ -9,20 +9,6 @@
     onLaunch() {
       this.refreshToken()
     },
-    onShareAppMessage() {
-      // const promise = new Promise(resolve => {
-      //   setTimeout(() => {
-      //     resolve({
-      //       title: '红色崇凝'
-      //     })
-      //   }, 2000)
-      // })
-      return {
-        title: '红色崇凝123',
-        path: '/pages/open/index'
-        // promise
-      }
-    },
     methods: {
       refreshToken() {
         const token = wx.getStorageSync('token') || ''

@@ -68,7 +68,6 @@
       const { id } = options
       this.postsId = id
       this.getDetailData(id)
-      console.log(this.postsId, typeof this.postsId)
     },
     onShareAppMessage() {
       return { title: '红色崇凝', path: '/pages/open/index' }

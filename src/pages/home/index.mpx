@@ -18,15 +18,15 @@
       { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
     [
-      { icon: ICON_STUDY, txt: '支持党史学习' },
-      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
-    ],
-    [
-      { icon: ICON_STUDY, txt: '支持党史学习' },
-      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
-    ],
-    [
       { icon: ICON_FLOWER, txt: '支持云端敬献献花' },
+      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
+    ],
+    [
+      { icon: ICON_STUDY, txt: '支持党史学习' },
+      { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
+    ],
+    [
+      { icon: ICON_STUDY, txt: '支持党史学习' },
       { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
     [{ icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }]

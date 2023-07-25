@@ -69,7 +69,7 @@
   // 给月份和日期进行补0
   const addZero = (n) => (n < 9 ? '0' + n : '' + n)
 
-  const dayMap = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五' }
+  const dayMap = { 0: '日', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' }
 
   createPage({
     data: {
@@ -255,7 +255,7 @@
         const minDate = `${d.getFullYear()}${addZero(d.getMonth() + 1)}${addZero(d.getDate())}`
         wx.request({
           url: ApiConfig.GET_COURSE,
-          data: { minDate, options: 'bookingFull' },
+          data: { minDate, options: 'bookingFull', pageSize: 8 },
           success: (res) => {
             const { status, data, exception } = res.data
             if (status === 'ok') {
