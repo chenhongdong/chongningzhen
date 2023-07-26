@@ -31,6 +31,7 @@
   const defUserInfo = { avatarUrl: DEF_AVATAR, nick: '' }
   // 给月份和日期进行补0
   const addZero = (n) => (n < 9 ? '0' + n : '' + n)
+  const halfDayMap = { 1: '上午', 2: '下午' }
 
   createPage({
     data: {
@@ -124,13 +125,15 @@
                 const month = addZero(d.getMonth() + 1)
                 const day = addZero(d.getDate())
                 const time = year + '-' + month + '-' + day
+                const halfDayTxt = halfDayMap[item.halfDay]
                 return {
                   id: item.id,
                   time,
                   appointDate: item.appointDate,
                   scenicSpotList: item.scenicSpotList,
                   contactName: item.contactName,
-                  visitorCount: item.visitorCount
+                  visitorCount: item.visitorCount,
+                  halfDayTxt
                 }
               })
               this.listData = validInfo

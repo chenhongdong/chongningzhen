@@ -29,7 +29,23 @@
           >
             <view class="course_info {{item.bookingFull ? 'no' : ''}}">
               <view class="name">0{{ index + 1 }}《{{ item.courseName }}》</view>
-              <view class="other">讲师:{{ item.courseTeacher }}  时长:{{ item.courseDurationM }}分钟  地点:{{ item.name }}</view>
+              <view class="other"
+                >讲师:{{ item.courseTeacher }} 时长:{{ item.courseDurationM }}分钟 地点:{{
+                  item.name
+                }}</view
+              >
+            </view>
+            <view class="icon {{item.selected ? 'ok' : ''}}"></view>
+          </view>
+        </view>
+      </view>
+      <view class="course">
+        <view class="title">选择游览路线(必选，单选)</view>
+        <view class="content">
+          <view wx:for="{{routes}}" class="item" wx:key="index" catchtap="selectRoute(item, index)">
+            <view class="course_info">
+              <view class="name">游览{{ item.name }}</view>
+              <view class="other">{{ item.content }}</view>
             </view>
             <view class="icon {{item.selected ? 'ok' : ''}}"></view>
           </view>
@@ -45,6 +61,12 @@
           <view class="option">
             <view class="name">来访单位：</view>
             <input type="text" class="inp" wx:model="{{visitingEnterprise}}" />
+          </view>
+          <view class="option">
+            <view class="name">来访时间段：</view>
+            <view class="half" wx:for="{{radioItems}}" catchtap="radioChange(item, index)" wx:key="index">
+              <view class="icon {{item.checked ? 'ok' : ''}}"></view><text>{{ item.name }}</text>
+            </view>
           </view>
           <view class="option">
             <view class="name">联系人姓名：</view>
@@ -83,16 +105,56 @@
       contactName: '',
       contactPhone: '',
       isOk: false,
-      isForbid: false
+      isForbid: false,
+      routes: [],
+      touringLineId: '',
+      halfDay: 0,
+      radioItems: [
+        { name: '上午', value: 1, checked: true },
+        { name: '下午', value: 2, checked: false }
+      ]
     },
     onLoad() {
       this.getCourseData()
-      wx.setNavigationBarTitle({ title: '预约学习' })
+      this.getRoutes()
+      wx.setNavigationBarTitle({ title: '红色古镇 幸福崇凝' })
     },
     onShareAppMessage() {
       return { title: '红色崇凝', path: '/pages/open/index' }
     },
     methods: {
+      // 选择上下午时间段
+      radioChange(item, idx) {
+        console.log(item)
+        this.halfDay = item.value
+        this.radioItems.forEach((radio) => (radio.checked = false))
+        this.radioItems[idx].checked = !item.checked
+      },
+      // 选择旅游路线
+      selectRoute(item, idx) {
+        this.touringLineId = item.id
+        this.routes.forEach((route) => (route.selected = false))
+        this.routes[idx].selected = true
+        console.log('路线', item, this.touringLineId)
+      },
+      // 获取旅游路线数据
+      getRoutes() {
+        wx.request({
+          url: ApiConfig.GET_ROUTES,
+          success: (res) => {
+            const { status, data, exception } = res.data
+            if (status === 'ok') {
+              this.routes = data.map((item) => {
+                item.selected = false
+                return item
+              })
+              console.log('获取路线 ', this.routes)
+            } else {
+              wx.showToast({ title: exception?.message, icon: 'none' })
+            }
+          }
+        })
+      },
       loginMp() {
         wx.login({
           success: (res) => {
@@ -133,7 +195,9 @@
           visitorCount,
           contactName,
           contactPhone,
-          visitingEnterprise
+          visitingEnterprise,
+          touringLineId,
+          halfDay
         } = this
         console.log(appointDate, visitorCount, contactName, contactPhone, selectCourseArr)
         const token = wx.getStorageSync('token') || ''
@@ -164,7 +228,9 @@
             contactName,
             contactPhone,
             visitingEnterprise,
-            scenicSpotIdList: selectCourseArr
+            scenicSpotIdList: selectCourseArr,
+            touringLineId,
+            halfDay
           },
           success: (res) => {
             const { status, exception } = res.data
@@ -296,8 +362,7 @@
 
 <style lang="stylus" scoped>
   .study
-    height 100vh
-    padding-bottom 360rpx
+    padding-bottom 160rpx
     background-color #f2f3f5
     .title_bar
       width 100%
@@ -352,7 +417,7 @@
               .other
                 padding-top 10rpx
                 font-size 24rpx
-                color: #666;
+                color #666
             .icon
               width 44rpx
               height 44rpx
@@ -360,8 +425,6 @@
               background-size 100% 100%
               &.ok
                 background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/4c534fd73e8ad7726e4b9f99ef87c84b46423ad95567d98d12e113a59da2e99c.png')
-              &.no
-                background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/5542a7bb5ec5d2cf1d86fc6469965f3dfee2eb72c254c59f616d3fa712255c81.png')
         &.date
           .content
             display flex
@@ -421,6 +484,17 @@
                 border 2rpx #e5e6eb solid
                 border-radius 12rpx
                 box-sizing border-box
+              .half
+                display flex
+                align-items center
+                .icon
+                  width 44rpx
+                  height 44rpx
+                  background url('https://hongselvyou.lndx-study.beihero.com/file/png/7986387b61801103d39a502d236b619a0fb7d7b95453e34c83bc2a4b427a0bca.png') no-repeat
+                  background-size 100% 100%
+                  margin-right 20rpx
+                  &.ok
+                    background-image url('https://hongselvyou.lndx-study.beihero.com/file/png/4c534fd73e8ad7726e4b9f99ef87c84b46423ad95567d98d12e113a59da2e99c.png')
             .tip
               font-size 22rpx
               color #959595

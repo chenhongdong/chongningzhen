@@ -3,7 +3,7 @@
     <view class="list">
       <view class="item" wx:for="{{listData}}" wx:key="index">
         <view class="info">
-          <view class="time">{{ item.time }}</view>
+          <view class="time">{{ item.time }} {{ item.halfDayTxt }}</view>
           <text class="txt">预约成功</text>
           <view
             class="name"

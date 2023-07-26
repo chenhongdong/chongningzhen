@@ -29,7 +29,7 @@
       { icon: ICON_STUDY, txt: '支持党史学习' },
       { icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }
     ],
-    [{ icon: ICON_POS, txt: '渭南市临渭区崇凝镇' }]
+    [{ icon: ICON_POS, txt: '渭南市华州区高塘镇' }]
   ]
 
   createPage({
