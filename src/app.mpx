@@ -54,7 +54,8 @@
       "./pages/home/index",
       "./pages/profile/index",
       "./pages/study/index",
-      "./pages/detail/index"
+      "./pages/detail/index",
+      "./pages/detail/intro"
     ],
     "tabBar": {
       "custom": true,

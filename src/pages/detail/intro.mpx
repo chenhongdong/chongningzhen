@@ -1,0 +1,92 @@
+<template>
+  <view class="detail_wrapper">
+    <view class="box">
+      <view class="content">
+        <view class="intro">
+          <view class="brief">崇凝镇</view>
+          <view class="text">{{ content }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import { createPage } from '@mpxjs/core'
+
+  createPage({
+    data: {
+      content: '崇凝镇地处渭南东塬，北望渭水，南依秦岭，东临华州区赤水河，西临渭南水源保护地沋河，距离市区18公里，面积35平方公里，辖12个行政村108个村民小组，人口2.6万余人，耕地面积3.6万余亩，是东塬最大的商贸集散地。崇凝镇历史悠久，古称“独孤庄”，相传隋文帝杨坚的皇后独孤伽罗早年曾在此居住而得名。据史料记载，“独孤庄”一直使用到（清）光绪十八年（1892）年，后因该镇东南方向筑有一座“崇凝观”，故将其改为“崇凝镇”。崇凝镇文化厚重，镇西南半公里处有明代吏部左侍郎孙宏的陵寝；镇西南二公里处有秦始皇行宫步寿宫遗址；镇北边占地二十多亩矗立着元末将军李思齐陵地柏树坟、李家祠堂。尤为出名的是镇东南角处有一个崇凝老爷庙，又名奓庙，老爷庙广场上有座大戏楼。1928年，就是在崇凝老爷庙前的古戏楼上，陕西省第一个苏维埃政权诞生了。从此，崇凝镇作为陕西省第一个苏维埃政权诞生地、渭华起义发祥地、革命老区，和江西瑞金是闻名中外的红色故都一样，都成了人们不可忘记的红色历史记忆。'
+    },
+    onLoad() {
+    },
+    onShareAppMessage() {
+      return { title: '红色崇凝', path: '/pages/open/index' }
+    }
+  })
+</script>
+
+<style lang="stylus" scoped>
+  .detail_wrapper
+    position relative
+    height 100%
+    background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/fe1099ccdc281708bceb3e17bfa1d0115f3abccd641c708db0db11b9d8b232ae.jpg') no-repeat
+    background-size 100% 100%
+    overflow-y auto
+    .box
+      width calc(100% - 82rpx)
+      margin 50rpx auto
+      overflow-y auto
+      &::-webkit-scrollbar
+        display none
+        width 100%
+        height 380rpx
+        overflow hidden
+        .video-area, .slider
+          width 100%
+          height 100%
+          background-color #000
+          .control
+            width 100%
+            height 100%
+            background-color #000
+        .slider
+          .swiper-item
+            width 100%
+            height 100%
+            overflow hidden
+            .img
+              width 100%
+              height 100%
+      .content
+        position relative
+        top -26rpx
+        height 100%
+        .intro
+          padding 30rpx
+          box-sizing border-box
+          .brief
+            font-weight 600
+            font-size 34rpx
+            color #f3db8f
+            letter-spacing 3rpx
+            &:after
+              content ''
+              display block
+              width 100%
+              height 2rpx
+              margin-top 10rpx
+              background-color #e6cea6
+          .text
+            padding-top 22rpx
+            line-height 44rpx
+            font-size 30rpx
+            color #fff
+</style>
+
+<script type="application/json">
+  {
+    "component": true,
+    "usingComponents": {}
+  }
+</script>

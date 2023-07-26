@@ -180,9 +180,11 @@
     background url('https://hongselvyou.lndx-study.beihero.com/file/jpg/fe1099ccdc281708bceb3e17bfa1d0115f3abccd641c708db0db11b9d8b232ae.jpg') no-repeat
     background-size 100% 100%
     overflow-y auto
+    &::-webkit-scrollbar
+      display none
     .box
       width calc(100% - 82rpx)
-      height 100%
+      /*height 100%*/
       margin 50rpx auto
       overflow-y auto
       &::-webkit-scrollbar

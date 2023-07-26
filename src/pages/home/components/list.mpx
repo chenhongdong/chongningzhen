@@ -20,7 +20,8 @@
             wx:for-index="bidx"
             wx:key="bidx"
             catchtap="jumpPage(btn, item.id)"
-          >{{ btn.text }}</view>
+            >{{ btn.text }}</view
+          >
         </view>
       </view>
     </view>
@@ -55,7 +56,7 @@
       },
       // 跳到学习预约页
       jumpStudy() {
-        wx.navigateTo({ url: `/pages/study/index` })
+        wx.navigateTo({ url: '/pages/study/index' })
       },
       // 跳到详情页
       jumpDetail(id) {
@@ -67,23 +68,23 @@
 
 <style lang="stylus" scoped>
   .home-list
-    position absolute
-    left 20rpx
-    top 70rpx
-    width 750rpx
-    height 1600rpx
-    background url('https://hongselvyou.lndx-study.beihero.com/file/png/f1bfdf269d0674e8130f20fff3237149c8c1d5d60384051051e2321e20b2f09b.png') no-repeat
-    background-size 100% 100%
+    position relative
+    width 690rpx
+    margin 30rpx auto 200rpx
+    padding 30rpx 36rpx
+    background-color rgba(255, 255, 255, 0.9)
+    border-radius 20rpx
+    box-sizing border-box
     .item
       display flex
-      padding 0 36rpx
       margin-top 30rpx
       &:first-child
-        margin-top 218rpx
+        margin-top 0
       .pic
         display flex
         justify-content center
         align-items center
+        flex 0 0 315rpx
         width 315rpx
         height 210rpx
         padding 6rpx
