@@ -1,6 +1,6 @@
 <template>
   <view class="study" wx:if="{{!isOk}}">
-    <view class="title_bar">陕西省渭南市崇凝镇红色旅游基地</view>
+    <view class="title_bar">红色古镇 幸福崇凝</view>
     <view class="box">
       <view class="course date">
         <view class="title">选择学习日期</view>
@@ -40,7 +40,7 @@
         </view>
       </view>
       <view class="course">
-        <view class="title">选择游览路线(必选，单选)</view>
+        <view class="title">选择游览路线</view>
         <view class="content">
           <view wx:for="{{routes}}" class="item" wx:key="index" catchtap="selectRoute(item, index)">
             <view class="course_info">
@@ -62,7 +62,7 @@
             <view class="name">来访单位：</view>
             <input type="text" class="inp" wx:model="{{visitingEnterprise}}" />
           </view>
-          <view class="option">
+          <view class="option opt_half">
             <view class="name">来访时间段：</view>
             <view
               class="half"
@@ -122,7 +122,7 @@
     onLoad() {
       this.getCourseData()
       this.getRoutes()
-      wx.setNavigationBarTitle({ title: '红色古镇 幸福崇凝' })
+      wx.setNavigationBarTitle({ title: '学习预约' })
     },
     onShareAppMessage() {
       return { title: '红色崇凝', path: '/pages/open/index' }
@@ -481,6 +481,8 @@
               align-items center
               margin-bottom 30rpx
               text-align left
+              &.opt_half
+                justify-content flex-start
               .name
                 width 170rpx
                 font-size 26rpx
@@ -496,9 +498,12 @@
               .half
                 display flex
                 align-items center
+                font-size 26rpx
+                &:last-child
+                  margin-left 40rpx
                 .icon
-                  width 44rpx
-                  height 44rpx
+                  width 33rpx
+                  height 33rpx
                   background url('https://hongselvyou.lndx-study.beihero.com/file/png/7986387b61801103d39a502d236b619a0fb7d7b95453e34c83bc2a4b427a0bca.png') no-repeat
                   background-size 100% 100%
                   margin-right 20rpx
